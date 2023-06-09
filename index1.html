@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+  <script>
+    class Particle {
+      constructor(x, y, vx, vy, ax, ay) {
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.ax = ax;
+        this.ay = ay;
+      }
+
+      update() {
+        this.vx += this.ax;
+        this.vy += this.ay;
+        this.x += this.vx;
+        this.y += this.vy;
+      }
+    }
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const particles = [];
+
+    for (let i = 0; i < 100; i++) {
+      const particle = new Particle(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height,
+        0,
+        0,
+        0,
+        0.1
+      );
+      particles.push(particle);
+    }
+
+    const gravity = 0.1;
+    const gravitySource = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const particle = particles[i];
+        const dx = gravitySource.x - particle.x;
+        const dy = gravitySource.y - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const acceleration = gravity / distance;
+
+        particle.ax = dx / distance * acceleration;
+        particle.ay = dy / distance * acceleration;
+
+        particle.update();
+
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+    </script>
+  </body>
+</html>

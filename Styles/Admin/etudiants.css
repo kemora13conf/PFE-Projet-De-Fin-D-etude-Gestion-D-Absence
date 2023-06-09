@@ -1,0 +1,127 @@
+.list-container{
+    max-width: 1000px;
+}
+.main-list{
+    min-width: max-content;
+}
+.options{
+    margin-left: auto;
+    margin-right: auto;
+}
+.list-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 15px;
+    position: relative;
+    transition: all .3s ease;
+}
+.list-btn span{
+    position: absolute;
+    pointer-events: none;
+    top: calc(100% + 10px);
+    left: -100%;
+    opacity: 0;
+    width: max-content;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: var(--dark);
+    color: var(--light);
+    transition: all .2s ease;
+}
+
+.list-btn i{
+    font-size: 16px;
+}
+.list-btn:hover span{
+    left: -100%;
+    opacity: 1;
+}
+.list-add-btn:hover span{
+    left: -200%;
+    opacity: 1;
+}
+
+.action-icons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    gap: 5px;
+}
+td img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.etudiant-form{
+    max-width: 700px;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--light);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    box-shadow: rgba(50, 50, 93, 0.116) 0px 25px 50px -10px, 
+                rgba(0, 0, 0, 0.178) 0px 15px 30px -15px;
+}
+.form-image{
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    align-items: center;
+    border-radius: 50%;
+}
+.form-body{
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.form-col{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.form-gender{
+    height: 70px;
+    justify-content: center;
+}
+.form-submit{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items:center;
+    gap: 15px;
+}
+.cancel{
+    padding: 10px 20px;
+    background: var(--light-secondary);
+    color: var(--dark);
+    border: none;
+    outline: none;
+    border-radius: 7.5px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.cancel:hover{
+    background: var(--red);
+}
+@media only screen and (max-width: 630px){
+    .form-body{
+        flex-direction: column;
+    }
+    .etudiant-form{
+        width: calc(100% - 30px);
+        margin: 0 15px;
+    }
+}

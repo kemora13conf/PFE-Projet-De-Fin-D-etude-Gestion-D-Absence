@@ -1,0 +1,435 @@
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: var(--light);
+    display: flex;
+    gap: 10px;
+    z-index: 200;
+    box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 10px 0px,
+                rgba(100, 100, 111, 0.1) 0px 0px 3px 0px;
+}
+.logo{
+    width: 250px;
+    height: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 10px 0px,
+                rgba(100, 100, 111, 0.1) 0px 4px 3px 0px;
+}
+.logo > img{
+    height: 70px;
+}
+.section-title{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+    margin-left: 30px;
+}
+.section-title span{
+    color: var(--gray);
+}
+.today-date{
+    margin: 0px auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Jost-medium;
+}
+.profile--btn{
+    margin-right: 30px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+}
+.profile--image {
+    width: auto;
+    height: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    z-index: 2;
+}
+.profile--image > img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+}
+.profile--image .name{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.profile--btn .profile--menu{
+    position: absolute;
+    z-index: 1;
+    top: 40px;
+    right: 0px;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--light);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 10px 0px,
+                rgba(100, 100, 111, 0.1) 0px 0px 3px 0px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    /* animation: hide-profile-menu .3s forwards ease-in-out ; */
+}
+.show-profile-menu .profile--menu{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(50px);
+}
+.profile--image .name i{
+    transition: all .3s ease-in-out;
+}
+.show-profile-menu .name i{
+    transform: rotate(180deg);
+}
+
+.profile--menu::before{
+    content: '';
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 10px;
+    top: -5px;
+    z-index: -1;
+    transform: rotate(45deg);
+    background: var(--light);
+    box-shadow: rgba(100, 100, 111, 0.1) -3px -3px 3px 0px;
+}
+.profile--menu a,
+.profile--menu button{
+    all: unset;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    padding: 7px 14px;
+    color: var(--gray);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+.profile--menu button{
+    color: var(--dark);
+    background: var(--light-secondary);
+}
+.profile--menu a:hover,
+.profile--menu button:hover{
+    color: var(--light);
+    background: var(--dark);
+}
+
+nav{
+    position: fixed;
+    z-index: 201;
+    top: 100px;
+    width: 250px;
+    height: calc(100vh - 100px);
+    padding: 50px 20px 0px 20px;
+    background: var(--light);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 12px 10px 0px,
+                rgba(100, 100, 111, 0.1) 0px 4px 3px 0px;
+}
+nav ul {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 10px;
+}
+nav ul li{
+    position: relative;
+    list-style: none;
+    z-index: 2;
+    transition: all .3s ease-in-out;
+}
+nav ul li button{
+    all: unset;
+    position: relative;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-decoration: none;
+    height: 50px;
+    padding-left: 20px;
+    border-radius: 10px;
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+}
+nav ul li button:visited{
+    all: unset;
+}
+nav ul li button .awesome-icon{
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray);
+    transition: all .3s ease-in-out;
+}
+
+nav ul li button .text{
+    color: var(--gray);
+    font-size: 14px;
+    transition: all .3s ease-in-out;
+}
+.indicator{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: var(--light-secondary);
+    box-shadow: 0px 10px 20px -10px rgba(100, 100, 111, 0.3);
+    transition: all .3s ease-in-out;
+}
+.indicator::before{
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 25px;
+    border-radius: 5px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    left: -8px;
+    background: var(--dark);
+    box-shadow: 0px 0px 0px 3px var(--light);
+}
+
+nav ul li.active button .awesome-icon{
+    color: var(--dark);
+}
+nav ul li.active button .text{
+    color: var(--dark);
+    font-family: Poppins-medium;
+}
+
+nav ul li:nth-child(1).active ~ .indicator{
+    transform: translateY(calc(60px * 0));
+}
+nav ul li:nth-child(2).active ~ .indicator{
+    transform: translateY(calc(60px * 1));
+}
+nav ul li:nth-child(3).active ~ .indicator{
+    transform: translateY(calc(60px * 2 ));
+}
+nav ul li:nth-child(4).active ~ .indicator{
+    transform: translateY(calc(60px * 3));
+}
+nav ul li:nth-child(5).active ~ .indicator{
+    transform: translateY(calc(60px * 4));
+}
+@media only screen and (max-width: 810px){
+    .logo{
+        width: 200px;
+    }
+    .section-title{
+        margin-left: 10px;
+    }
+    .profile{
+        margin-right: 10px;
+    }
+    .profile--image .name{
+        display: none;
+    }
+    nav{
+        width: 200px;
+    }
+    nav ul li button{
+        padding-left: 10px;
+        gap: 10px;
+    }
+    nav ul li button .awesome-icon{
+        width: 20px;
+        height: 20px;
+    }
+}
+
+
+@media only screen and (max-width: 630px){
+    header{
+        padding: 0px 20px;
+        height: 70px;
+        gap: 10px;
+        justify-content: space-between;
+    }
+    .logo{
+        width: auto;
+        box-shadow: none;
+    }
+    .logo > img{
+        height: 50px;
+    }
+    .section-title{
+        display: none;
+    }
+    .today-date{
+        font-family: Jost;
+        font-size: 14px;
+    }
+    .section-title,
+    .today-date,
+    .profile--btn{
+        margin: 0;
+    }
+    .profile--image > img{
+        height: 40px;
+        width: 40px;
+    }
+    .profile--btn .profile--menu{
+        top: 20px;
+    }
+    body{
+        display: flex;
+        flex-direction: column;
+    }
+    nav{
+        width: fit-content;
+        align-self: center;
+        height: 60px;
+        top: auto;
+        bottom: 20px;
+        padding: 0 30px;
+        border-radius: 10px;
+        box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 10px 0px,
+                    rgba(100, 100, 111, 0.1) 0px 0px 3px 0px;
+    }
+    nav ul{
+        width: 100%;
+        height: 100%;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center ;
+    }
+    nav ul li{
+        width: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    nav ul li button{
+        flex-direction: column;
+        width: 70px;
+        height: auto;
+        gap: 0px;
+        padding: 0;
+    }
+    nav ul li button .awesome-icon{
+        transform: translateY(10px);
+        width: 25px;
+        height: 25px;
+    }
+    nav ul li button .text{
+        font-family: Jost;
+        flex-wrap: nowrap;
+        width: max-content;
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    nav ul li.active button .awesome-icon{
+        transform: translateY(-25px);
+        color: var(--light);
+    }
+    nav ul li:nth-child(3) button .icon path:nth-child(2){transition: all .3s ease-in-out;}
+    nav ul li:nth-child(3).active button .icon path:nth-child(2){
+        stroke: var(--secondary);
+    }
+    nav ul li.active button .text{
+        font-family: Jost;
+        font-size: 12px;
+        opacity: 1;
+        color: var(--secondary);
+        transform: translateY(-10px);
+    }
+    .indicator {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        top: -35px;
+        left: 0px;
+        background: var(--light);
+        box-shadow: rgba(100, 100, 111, 0.1) 0px -3px 3px 0px;
+    }
+    .circle{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--secondary);
+        margin: 0px auto;
+        z-index: 2;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 10px 0px,
+                    rgba(100, 100, 111, 0.1) 0px 3px 3px 0px;
+    }
+    .indicator::before{
+        width: 40px;
+        height: 40px;
+        top: 1px;
+        left: -37px;
+        background: transparent;
+        border-radius: 50%;
+        box-shadow: 18px 19px var(--light);
+    }
+    .indicator::after{
+        content: '';
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 1px;
+        right: -37px;
+        background: transparent;
+        border-radius: 50%;
+        box-shadow: -18px 19px var(--light);
+    }
+    
+    nav ul li:nth-child(1).active ~ .indicator{
+        transform: translateX(calc(70px * 0));
+    }
+    nav ul li:nth-child(2).active ~ .indicator{
+        transform: translateX(calc(70px * 1));
+    }
+    nav ul li:nth-child(3).active ~ .indicator{
+        transform: translateX(calc(70px * 2 ));
+    }
+    nav ul li:nth-child(4).active ~ .indicator{
+        transform: translateX(calc(70px * 3));
+    }
+    nav ul li:nth-child(5).active ~ .indicator{
+        transform: translateX(calc(70px * 4));
+    }
+}
+@media only screen and (max-width: 370px){
+    nav{
+        min-width: 100%;
+        border-radius: 0px;
+        bottom: 0px;
+    }
+}

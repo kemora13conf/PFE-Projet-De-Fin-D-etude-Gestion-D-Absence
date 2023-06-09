@@ -1,0 +1,291 @@
+.setting{
+    max-width: 1000px;
+    width: 100%;
+    min-height: 450px;
+    align-self: center;
+    justify-self: center;
+    height: auto;
+    display: flex;
+    background: var(--light);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+    border-radius: 20px;
+    overflow: hidden;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+.remove-content{
+    animation: fadeOut .250s forwards ease-in-out;
+}
+.setting-head{
+    max-width: 250px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 12px 10px 0px,
+                rgba(100, 100, 111, 0.1) 0px 4px 3px 0px;
+}
+.setting-head h2{
+    text-align: center;
+}
+.etudiant-image{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+.setting-list-container{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    gap: 10px;
+    overflow: hidden;
+    overflow-x: auto;
+}
+.setting-list-container li{
+    position: relative;
+    list-style: none;
+    z-index: 2;
+    transition: all .3s ease-in-out;
+}
+.setting-list-container li button{
+    all: unset;
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    height: 50px;
+    padding-left: 10px;
+    border-radius: 10px;
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+}
+.setting-list-container li button:visited{
+    all: unset;
+}
+.setting-list-container li button .icon{
+    width: 30px;
+    height: 30px;
+    fill: var(--gray);
+    transition: all .3s ease-in-out;
+}
+
+.setting-list-container li button .text{
+    min-width: max-content;
+    color: var(--gray);
+    font-size: 12px;
+    transition: all .3s ease-in-out;
+}
+
+.setting-indicator{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: var(--light-secondary);
+    transition: all .3s ease-in-out;
+}
+.setting-indicator::before{
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 25px;
+    border-radius: 2px;
+    left: -12px;
+    background: var(--secondary);
+}
+.setting-body{
+    width: 100%;
+    display: flex;
+}
+.infos-form{
+    width: 100%;
+    padding: 20px;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+.remove-content{
+    animation: fadeOut .250s forwards ease-in-out;
+}
+.s-h3{
+    min-width: max-content;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-family: Poppins-bold;
+    font-size: 25px;
+}
+.inputs-container{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+.inputs-side,
+.image-side{
+    max-width: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 10px;
+}
+.form-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+.input-box{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.input-box .label{
+    font-size: 14px;
+    color: var(--gray);
+    margin-left: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+.input-box input{
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 14px;
+    border: none;
+    box-shadow: rgba(100, 100, 111, 0.3) 0px 5px 10px -5px,
+                rgba(100, 100, 111, 0.1) 0px 0px 0px 1px;
+    border-radius: 10px;
+    outline: transparent;
+    color: var(--dark);
+    transition: all .3s ease-in-out;
+}
+.input-box input:focus{
+    box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 10px 0px,
+                rgba(100, 100, 111, 0.1) 0px 0px 3px 0px,
+                var(--secondary) 0px 0px 2px 1px;
+}
+/* when the input is focused */
+.input-box:has(input:focus) label{
+    color: var(--secondary);
+}
+.error{
+    color: var(--red);
+    font-family: Jost;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+#imp-img-btn{
+    border: none;
+    outline: transparent;
+    text-align: left;
+    width: fit-content;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 0px auto;
+    margin-bottom: 10px;
+    transition: all .3s ease-in-out;
+}
+#imp-img-btn:hover{
+    color: var(--light);
+    background: var(--secondary);
+}
+#img-file{
+    display: none;
+}
+#p-image{
+    width: 200px;
+    height: 200px;
+    align-self: center;
+    object-fit: cover;
+    object-position: center;
+}
+.submit-group{
+    margin-top: auto;
+}
+.submit-group button{
+    padding: 10px 15px;
+    border: none;
+    outline: transparent;
+    background: var(--secondary);
+    font-family: Poppins;
+    color: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 20px -15px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+.submit-group button:hover{
+    background: var(--dark);
+}
+
+.password-form{
+    gap: 10px;
+}
+.password-form .inputs-side{
+    align-self: center;
+    margin: 0px auto;
+}
+@media only screen and (max-width: 1080px){
+    .inputs-container{
+        flex-direction: column;
+        align-items: center;
+    }
+    .inputs-side{
+        padding: 0px;
+    }
+}
+@media screen and (max-width: 860px){
+    .setting{
+        flex-direction: column;
+        box-shadow: unset;
+        border-radius: 0;
+
+    }
+    .setting-head{
+        max-width: unset;
+        box-shadow: unset;
+        padding-bottom: 0px;
+    }
+    .infos-form{
+        padding-top: 0;
+    }
+    .s-h3{
+        text-align: center;
+    }
+    .setting-list-container{
+        flex-direction: row;
+        justify-content: center;
+        padding: 5px 0px;
+    }
+    .setting-list-container li{
+        scroll-snap-align: start;
+    }
+    .setting-list-container li button .awesome-icon{
+        font-size: 20px;
+    }
+    .setting-list-container li button{
+        padding: 0px 14px;
+        gap: 10px;  
+        border-radius: 14px;
+    }
+    .setting-indicator{
+        display: none;
+    }
+    .setting-indicator .circle{
+        display: none;
+    }
+
+}

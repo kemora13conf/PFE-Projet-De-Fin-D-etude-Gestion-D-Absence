@@ -1,0 +1,180 @@
+.list-container{
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    border-radius: 15px;
+    box-shadow: rgba(50, 50, 93, 0.116) 0px 25px 50px -10px, 
+                rgba(0, 0, 0, 0.178) 0px 15px 30px -15px;
+    overflow: hidden;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+.list-head{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px 20px;
+}
+.list-btn{
+    border: none;
+    outline: none;
+    background: var(--light-secondary);
+    color: var(--dark);
+    padding: 10px 20px;
+    border-radius: 7.5px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.list-btn:focus{
+    scale: 0.9;
+}
+.list-btn:hover{
+    background: var(--dark);
+    color: white;
+}
+.list-holder{
+    width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+    box-shadow: inset rgba(50, 50, 93, 0.116) 0px 0px 50px -10px, 
+                inset rgba(0, 0, 0, 0.178) 0px 0px 30px -15px;
+}
+.list-holder::-webkit-scrollbar{
+    height: 10px;
+}
+.list-holder::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+}
+.main-list{
+    min-width: 100%;
+    width: 100%;
+    border-collapse: collapse;
+}
+thead tr{
+    background-color: var(--light-secondary);
+}
+tr{
+    cursor: pointer;
+    transition: all.3s ease;
+}
+tr:hover{
+    background: var(--bg-color);
+}
+td{
+    text-align: center;
+    padding: 10px 5px;
+}
+td i.fa-trash{
+    margin: 0px auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--red);
+    cursor: pointer;
+    transition: all .3s ease;
+}
+td i.fa-trash:hover{
+    scale: 1.2;
+    background: var(--red);
+    color: var(--light);
+}
+td i.fa-user-edit{
+    margin: 0px auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all .3s ease;
+}
+td i.fa-user-edit:hover{
+    scale: 1.2;
+    font-size: 14px;
+    background: var(--dark);
+    color: var(--light);
+}
+
+
+/* classe add for style */
+.add-classe-form{
+    max-width: 300px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--light);
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: rgba(50, 50, 93, 0.116) 0px 25px 50px -10px, 
+                rgba(0, 0, 0, 0.178) 0px 15px 30px -15px;
+
+}
+.form-group{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.form-group label{
+    color: var(--dark);
+    margin-left: 7.5px;
+}
+.form-group input,
+.form-group select{
+    padding: 10px 14px;
+    border: 1px solid var(--gray);
+    outline: none;
+    border-radius: 7.5px;
+    color: var(--dark);
+}
+.form-group select:hover{
+    cursor: pointer;
+}
+.form-group button[type="submit"]{
+    padding: 10px 20px;
+    background: var(--dark);
+    color: var(--light);
+    border: none;
+    outline: none;
+    border-radius: 7.5px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.form-group button[type="submit"]:hover{
+    background: var(--secondary);
+}
+.fa-close{
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+    border-radius: 50%;
+    background: var(--light-secondary);
+    color: var(--dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.fa-close:hover{
+    background: var(--dark);
+    color: var(--light);
+}
+@media only screen and (max-width: 847px){
+    .main-list{
+        min-width: max-content;
+    }
+}
+@media only screen and (max-width: 630px){
+    .list-head{
+        padding: 10px;
+    }
+}

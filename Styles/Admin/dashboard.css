@@ -1,0 +1,59 @@
+.dashboard{
+    max-width: 800px;
+    width: 100%;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+.head{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+.head h1{
+    text-align: center;
+}
+
+.buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.button{
+    min-width: 250px;
+    width: fit-content;
+    padding: 60px 60px 20px 30px;
+    background: var(--dark);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+.button-icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: white;
+    height: 80px;
+    width: 120px;
+    border-bottom-left-radius: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+.button-icon i{
+    font-size: 40px;
+}
+.button-subtitle{
+    color: white;
+    font-weight: lighter;
+}
+.button-title{
+    color: white;
+}
