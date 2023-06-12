@@ -11,15 +11,15 @@
 
     $uploads_dir = '../../../Profile-pictures/Teachers';
 
-    if(isset($_POST['add-Professor'])){
-        $data = json_decode($_POST['add-Professor'], true);
+    if(isset($_POST['add-professor'])){
+        $data = json_decode($_POST['add-professor'], true);
         $nom = $data['nom'];
         $prenom = $data['prenom'];
         $email = $data['email'];
         $phone = $data['phone'];
         $gender = $data['gender'];
         $mdp = md5(uniqid(time()));
-        $image = null;
+        $image = 'default.png';
         if(isset($_FILES['image'])){
             $tmp_name = $_FILES['image']['tmp_name'];
             $name = basename($_FILES['image']['name']);
@@ -51,14 +51,14 @@
             if(!checkField($conn, 'professeurs', 'codeProf', $codeProf, 'nomProf', $nom)){
                 mysqli_query(
                     $conn, 
-                    "UPDATE professeurs SET nomEtudiant='$nom'
+                    "UPDATE professeurs SET nomProf='$nom'
                     WHERE codeProf='$codeProf'"
                 ) or die(mysqli_error($conn));
             }
             if(!checkField($conn, 'professeurs', 'codeProf', $codeProf, 'prenomProf', $prenom)){
                 mysqli_query(
                     $conn, 
-                    "UPDATE professeurs SET prenomEtudiant='$prenom'
+                    "UPDATE professeurs SET prenomProf='$prenom'
                     WHERE codeProf='$codeProf'"
                 ) or die(mysqli_error($conn));
             }
@@ -72,7 +72,7 @@
             if(!checkField($conn, 'professeurs', 'codeProf', $codeProf, 'telephone', $phone)){
                 mysqli_query(
                     $conn, 
-                    "UPDATE professeurs SET email='$email'
+                    "UPDATE professeurs SET telephone='$phone'
                     WHERE codeProf='$codeProf'"
                 ) or die(mysqli_error($conn));
             }
@@ -97,7 +97,7 @@
             echo json_encode(['code' => 200, 'message' => 'Le professeur été modifier!']);
             exit;
         }
-        echo json_encode(['code'=>200, 'message'=>'Aucun professeur été trouvé!']);
+        echo json_encode(['code'=>404, 'message'=>'Aucun professeur été trouvé!']);
         exit;
     }
 

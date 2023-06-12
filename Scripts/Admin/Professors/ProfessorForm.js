@@ -23,14 +23,15 @@ export default class ProfessorForm {
 
     async renderListRow(professor){
         return `
-            <tr class="etduiant-row" data-id="${professor.cne} data-classeId="${professor.codeClasse}">
-                <td><img src="/Profile-pictures/Etudiants/${professor.image}"/></td>
-                <td>${professor.orderNb}</td>
-                <td>${professor.cne}</td>
-                <td>${professor.nom}</td>
-                <td>${professor.prenom}</td>
-                <td>${professor.classe}</td>
-                <td>${professor.birthday}</td>
+            <tr class="professor-row" data-id="${professor.codeProf}">
+                <td>
+                    <img src="/Profile-pictures/Teachers/${professor.image}"/>
+                </td>
+                <td>${professor.codeProf}</td>
+                <td>${professor.nomProf}</td>
+                <td>${professor.prenomProf}</td>
+                <td>${professor.email}</td>
+                <td>${professor.telephone}</td>
                 <td>
                     <div class=" action-icons">
                         <i class="fas fa-user-edit edit-professor" data-id="${professor.codeProf}"></i>
@@ -46,7 +47,7 @@ export default class ProfessorForm {
             btn.addEventListener(
                 'click', 
                 async () => {
-                    let [res] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?delete=${btn.dataset.id}`);
+                    let [res] = await loadData(`/Admin/Inc/Api/professors.inc.php?delete=${btn.dataset.id}`);
                     if(res && res.code==200){
                         
                         alertContainer.appendChild(new Alert({
@@ -65,11 +66,11 @@ export default class ProfessorForm {
         editButtons = Array.prototype.slice.call(editButtons);
         editButtons.map(async btn => {
             btn.addEventListener('click', async ()=>{
-                let [etd] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?by_cne=${btn.dataset.id}`);
-                const formEtd = new EtudiantForm(list, etd).render();
-                popContainer.appendChild(formEtd);
+                console.log('clicked');
+                let [prf] = await loadData(`/Admin/Inc/Api/Professors.inc.php?by_codeProf=${btn.dataset.id}`);
+                popContainer.appendChild(new ProfessorForm(list, prf).render())
                 popContainer.classList.add("open-popup");
-                console.log(etd)
+                console.log(prf)
             })
         })
     }
@@ -80,12 +81,11 @@ export default class ProfessorForm {
             <thead>
                 <tr>
                     <td>Image</td>
-                    <td>N</td>
-                    <td>CNE</td>
+                    <td>code</td>
                     <td>Nom</td>
                     <td>Prenom</td>
-                    <td>Classe</td>
-                    <td>Date de naissance</td>
+                    <td>Email</td>
+                    <td>Telephone</td>
                     <td>Action</td>
                 </tr>
             </thead>
@@ -117,7 +117,7 @@ export default class ProfessorForm {
             </div>
             <img 
                 id="professor-img"
-                src="/Profile-pictures/Teachers/${this.professor ? this.professor.image : "professor.png"}" 
+                src="/Profile-pictures/Teachers/${this.professor ? this.professor.image : "default.png"}" 
                 class="form-image" />
             <div class="form-body">
                 <div class="form-col">
@@ -128,7 +128,7 @@ export default class ProfessorForm {
                             required
                             id="nom" 
                             placeholder="Nom d'professor"
-                            value="${this.professor != null ? this.professor.nom : ''}" />
+                            value="${this.professor != null ? this.professor.nomProf : ''}" />
                     </div>
                     <div class="form-group">
                         <label for="prenom">Le prenom</label>
@@ -137,7 +137,7 @@ export default class ProfessorForm {
                             required
                             id="prenom" 
                             placeholder="prenom d'professor"
-                            value="${this.professor != null ? this.professor.prenom : ''}" />
+                            value="${this.professor != null ? this.professor.prenomProf : ''}" />
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -151,13 +151,13 @@ export default class ProfessorForm {
                 </div>
                 <div class="form-col">
                     <div class="form-group">
-                        <label for="cne">Date de naissance</label>
+                        <label for="phone">Numéro du téléphone</label>
                         <input 
-                            type="date" 
+                            type="tel" 
                             required
-                            id="birthday" 
-                            placeholder="Date de naissance"
-                            value="${this.professor != null ? this.professor.birthday : ''}" />
+                            id="phone" 
+                            placeholder="numéro du téléphone"
+                            value="${this.professor != null ? this.professor.telephone : ''}" />
                     </div>
                     <div class="form-group form-gender">
                         <label>Genre</label>
@@ -185,8 +185,8 @@ export default class ProfessorForm {
                 <button class="cancel" type="button">Annuler</button>
                 ${
                     this.professor != null 
-                    ? "<button class='submit' type='submit'>Modifier l'professor</button>"
-                    : "<button class='submit' type='submit'>Ajouter l'professor</button>"
+                    ? "<button class='submit' type='submit'>Modifier le professeur</button>"
+                    : "<button class='submit' type='submit'>Ajouter le professeur</button>"
                 }
             </div>
         `
@@ -207,36 +207,30 @@ export default class ProfessorForm {
         })
         this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            let cne = this.form.querySelector('#cne').value;
             let nom = this.form.querySelector('#nom').value;
             let prenom = this.form.querySelector('#prenom').value;
             let email = this.form.querySelector('#email').value;
-            let birthday = this.form.querySelector('#birthday').value;
-            let classe = this.form.querySelector('#classe').value;
-            let homme = this.form.querySelector('#homme').checked;
+            let phone = this.form.querySelector('#phone').value;
+            let isMan = this.form.querySelector('#homme').checked;
 
             let data = {
-                cne: cne,
                 nom: nom,
                 prenom: prenom,
                 email: email,
-                birthday: birthday,
-                classe: classe,
-                gender: homme? "Homme" : "Femme",
+                phone: phone,
+                gender: isMan ? "Homme" : "Femme",
             }
 
             if(
-                this.isEmpty(cne) 
-                || this.isEmpty(nom)
+                this.isEmpty(nom)
                 || this.isEmpty(prenom)
                 || this.isEmpty(email)
-                || this.isEmpty(birthday)
-                || this.isEmpty(classe)
+                || this.isEmpty(phone)
             ) return;
 
             let formData = new FormData();
             if(this.professor != null){
-                data.originalcne = this.professor.cne
+                data.codeProf = this.professor.codeProf
                 console.log(data);
                 formData.append('update-professor', JSON.stringify(data)) 
             }else{
@@ -245,7 +239,7 @@ export default class ProfessorForm {
             if(imgFile.value != '') formData.append('image', imgFile.files[0]);
 
             fetch(
-                "/Admin/Inc/Api/Etudiants.inc.php",
+                "/Admin/Inc/Api/Professors.inc.php",
                 {
                     method: 'POST',
                     body: formData,
@@ -259,13 +253,11 @@ export default class ProfessorForm {
                     msg_title: 'Success',
                     msg_text: res.message
                 }, alertContainer).render())
-                
-                let choosedOption = document.querySelector('#choosed-option');
-                const filter =  choosedOption.children[0].dataset.value;
-                await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
+                console.log("creating list")
+                await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
             })
             .catch(err => {
-                console.log(err);
+                console.log(`${err}`);
                 alertContainer.appendChild(new Alert({
                     type: 'warning',
                     msg_title: 'Failed',

@@ -100,34 +100,7 @@ export default class Professors{
         await this.configEditButtons(this.list)
     }
     
-    async configOptionsInput(list, choosedOption, options){
-        function chooseOption(list,target,choosed){
-            list.classList.toggle('show-options-list')
-            options.forEach(element => {
-                element.classList.remove('choosed');
-                target.classList.add('choosed');
-                choosed.children[0].dataset.value = target.dataset.value;
-                choosed.children[0].innerHTML = target.innerHTML;
-            });
-        }
-        options.forEach(
-            element => {
-                element.addEventListener(
-                    'click', 
-                    async (e)=>{
-                        this.listContainer.classList.remove('remove-overflow')
-                        await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
-                    }
-                )
-            }
-        )
-        choosedOption.addEventListener('click', () => {
-            list.classList.toggle('show-options-list')
-            this.listContainer.classList.toggle('remove-overflow')
-        })
-    }
     async configElements(){
-        let [res] = await loadData(`/Admin/Inc/Api/Classes.inc.php`);
         this.listContainer.setAttribute("class", "list-container");
         this.listHead.setAttribute("class", "list-head");
         this.listHolder.setAttribute("class", "list-holder");
@@ -148,12 +121,6 @@ export default class Professors{
                 <i class="fas fa-plus"></i>
             </button>
         `;
-        
-
-        let choosedOption = this.listHead.querySelector('#choosed-option');
-        let optionsList = this.listHead.querySelector('#options-list');
-        let options = this.listHead.querySelectorAll('.option');
-        // this.configOptionsInput(optionsList, choosedOption, options, this.optionClickHandler);
 
         await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
 
