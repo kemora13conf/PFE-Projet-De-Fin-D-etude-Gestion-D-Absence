@@ -58,7 +58,7 @@ td img{
     object-position: center;
 }
 
-.etudiant-form{
+.add-update-form{
     max-width: 700px;
     width: 100%;
     padding: 15px 20px;
@@ -120,7 +120,7 @@ td img{
     .form-body{
         flex-direction: column;
     }
-    .etudiant-form{
+    .add-update-form{
         width: calc(100% - 30px);
         margin: 0 15px;
     }

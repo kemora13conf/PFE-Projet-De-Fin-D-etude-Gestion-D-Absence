@@ -2,10 +2,10 @@ import Alert from "../../Alert/Alert.js";
 import { alertContainer, popContainer } from "../Admin.js";
 import { loadData } from "../../utils.js";
 
-export default class EtudiantForm {
-    constructor(list, etudiant=null){
+export default class ProfessorForm {
+    constructor(list, professor=null){
         this.list = list;
-        this.etudiant = etudiant;
+        this.professor = professor;
         this.form = document.createElement('form');
     }
     isEmpty(data){
@@ -20,41 +20,28 @@ export default class EtudiantForm {
             popContainer.classList.remove('open-popup');
         }, 500)
     }
-    async getClasses(){
-        let [res] = await loadData('/Admin/Inc/Api/Classes.inc.php');
-        let output = '';
-        res.map(item => {
-            if(this.etudiant != null && this.etudiant.codeClasse == item.codeClasse){
-                output += `<option value="${item.codeClasse}" selected>${item.niveauClasse}-${item.nomClasse}</option>`;
-            }else{
-                output += `<option value="${item.codeClasse}">${item.niveauClasse}-${item.nomClasse}</option>`;
-            }
-            
-        })
-        return output;
-    }
 
-    async renderListRow(etudiant){
+    async renderListRow(professor){
         return `
-            <tr class="etduiant-row" data-id="${etudiant.cne} data-classeId="${etudiant.codeClasse}">
-                <td><img src="/Profile-pictures/Etudiants/${etudiant.image}"/></td>
-                <td>${etudiant.orderNb}</td>
-                <td>${etudiant.cne}</td>
-                <td>${etudiant.nom}</td>
-                <td>${etudiant.prenom}</td>
-                <td>${etudiant.classe}</td>
-                <td>${etudiant.birthday}</td>
+            <tr class="etduiant-row" data-id="${professor.cne} data-classeId="${professor.codeClasse}">
+                <td><img src="/Profile-pictures/Etudiants/${professor.image}"/></td>
+                <td>${professor.orderNb}</td>
+                <td>${professor.cne}</td>
+                <td>${professor.nom}</td>
+                <td>${professor.prenom}</td>
+                <td>${professor.classe}</td>
+                <td>${professor.birthday}</td>
                 <td>
                     <div class=" action-icons">
-                        <i class="fas fa-user-edit edit-etudiant" data-id="${etudiant.cne}"></i>
-                        <i class="fas fa-trash delete-etudiant" data-id="${etudiant.cne}"></i>
+                        <i class="fas fa-user-edit edit-professor" data-id="${professor.cne}"></i>
+                        <i class="fas fa-trash delete-professor" data-id="${professor.cne}"></i>
                     </div> 
                 </td>
             </tr>
         `
     }
     async configDeleteButtons(list, url){
-        const deleteBtns = list.querySelectorAll('.delete-etudiant');
+        const deleteBtns = list.querySelectorAll('.delete-professor');
         deleteBtns.forEach(btn => {
             btn.addEventListener(
                 'click', 
@@ -74,7 +61,7 @@ export default class EtudiantForm {
         })
     }
     async configEditButtons(list){
-        let editButtons = list.querySelectorAll('.edit-etudiant');
+        let editButtons = list.querySelectorAll('.edit-professor');
         editButtons = Array.prototype.slice.call(editButtons);
         editButtons.map(async btn => {
             btn.addEventListener('click', async ()=>{
@@ -106,7 +93,7 @@ export default class EtudiantForm {
         if(res.length == 0){
             this.list.innerHTML += `
                 <tr>
-                    <td colspan="8" class="empty-list">Aucun etudiant</td>
+                    <td colspan="8" class="empty-list">Aucun professor</td>
                 </tr>
             `
             return;
@@ -122,35 +109,26 @@ export default class EtudiantForm {
         await this.configEditButtons(this.list)
     }
     async configElements(){
-        this.form.setAttribute('class', 'etudiant-form add-update-form');
+        this.form.setAttribute('class', 'professor-form add-update-form');
         this.form.innerHTML = `
             <i class="fas fa-close"></i>
             <div class="form-head">
-                <h1 class="form-title">Ajouter un etudiant</h1>
+                <h1 class="form-title">Ajouter un professor</h1>
             </div>
             <img 
-                id="etudiant-img"
-                src="/Profile-pictures/Etudiants/${this.etudiant ? this.etudiant.image : "etudiant.png"}" 
+                id="professor-img"
+                src="/Profile-pictures/Teachers/${this.professor ? this.professor.image : "professor.png"}" 
                 class="form-image" />
             <div class="form-body">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="cne">CNE</label>
-                        <input 
-                            type="text" 
-                            required
-                            id="cne" 
-                            placeholder="Code nationale etudiant"
-                            value="${this.etudiant != null ? this.etudiant.cne : ''}" />
-                    </div>
+                <div class="form-col">G
                     <div class="form-group">
                         <label for="nom">Le nom</label>
                         <input 
                             type="text" 
                             required
                             id="nom" 
-                            placeholder="Nom d'etudiant"
-                            value="${this.etudiant != null ? this.etudiant.nom : ''}" />
+                            placeholder="Nom d'professor"
+                            value="${this.professor != null ? this.professor.nom : ''}" />
                     </div>
                     <div class="form-group">
                         <label for="prenom">Le prenom</label>
@@ -158,8 +136,8 @@ export default class EtudiantForm {
                             type="text" 
                             required
                             id="prenom" 
-                            placeholder="prenom d'etudiant"
-                            value="${this.etudiant != null ? this.etudiant.prenom : ''}" />
+                            placeholder="prenom d'professor"
+                            value="${this.professor != null ? this.professor.prenom : ''}" />
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -168,7 +146,7 @@ export default class EtudiantForm {
                             required
                             id="email" 
                             placeholder="Addresse email"
-                            value="${this.etudiant != null ? this.etudiant.email : ''}" />
+                            value="${this.professor != null ? this.professor.email : ''}" />
                     </div>
                 </div>
                 <div class="form-col">
@@ -179,13 +157,7 @@ export default class EtudiantForm {
                             required
                             id="birthday" 
                             placeholder="Date de naissance"
-                            value="${this.etudiant != null ? this.etudiant.birthday : ''}" />
-                    </div>
-                    <div class="form-group">
-                        <label for="classe">La classe</label>
-                        <select id="classe" >
-                            ${await this.getClasses()}
-                        </select>
+                            value="${this.professor != null ? this.professor.birthday : ''}" />
                     </div>
                     <div class="form-group form-gender">
                         <label>Genre</label>
@@ -194,13 +166,13 @@ export default class EtudiantForm {
                                 type="radio" 
                                 id="homme" 
                                 name="genre" 
-                                ${this.etudiant != null ? this.etudiant.gender == 'Homme' ? "checked" : '' : ''} />
+                                ${this.professor != null ? this.professor.gender == 'Homme' ? "checked" : '' : ''} />
                             <label for="homme" style="margin-right: 10px">Homme</label>
                             <input 
                                 type="radio" 
                                 id="femme" 
                                 name="genre" 
-                                ${this.etudiant != null ? this.etudiant.gender == 'Femme' ? "checked" : '' : ''} />
+                                ${this.professor != null ? this.professor.gender == 'Femme' ? "checked" : '' : ''} />
                             <label for="femme">Femme</label>
                         </div>
                     </div>
@@ -212,9 +184,9 @@ export default class EtudiantForm {
             <div class="form-group form-submit">
                 <button class="cancel" type="button">Annuler</button>
                 ${
-                    this.etudiant != null 
-                    ? "<button class='submit' type='submit'>Modifier l'etudiant</button>"
-                    : "<button class='submit' type='submit'>Ajouter l'etudiant</button>"
+                    this.professor != null 
+                    ? "<button class='submit' type='submit'>Modifier l'professor</button>"
+                    : "<button class='submit' type='submit'>Ajouter l'professor</button>"
                 }
             </div>
         `
@@ -224,7 +196,7 @@ export default class EtudiantForm {
         });
 
         
-        let img = this.form.querySelector('#etudiant-img');
+        let img = this.form.querySelector('#professor-img');
         let imgFile = this.form.querySelector('#img-file');
         imgFile.addEventListener('change', () => {
             let reader = new FileReader();
@@ -263,12 +235,12 @@ export default class EtudiantForm {
             ) return;
 
             let formData = new FormData();
-            if(this.etudiant != null){
-                data.originalcne = this.etudiant.cne
+            if(this.professor != null){
+                data.originalcne = this.professor.cne
                 console.log(data);
-                formData.append('update-etudiant', JSON.stringify(data)) 
+                formData.append('update-professor', JSON.stringify(data)) 
             }else{
-                formData.append('add-etudiant', JSON.stringify(data));
+                formData.append('add-professor', JSON.stringify(data));
             }
             if(imgFile.value != '') formData.append('image', imgFile.files[0]);
 

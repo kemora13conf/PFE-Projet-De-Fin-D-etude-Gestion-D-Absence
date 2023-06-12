@@ -3,6 +3,7 @@ import { loadData } from "../utils.js";
 import ClassesList from "./Classes/ClassesList.js";
 import EtudiantsList from "./Classes/EtudiantsList.js";
 import Dashboard from "./Dashboard/Dashboard.js";
+import Professors from "./Professors/Professors.js";
 
 let root = document.getElementById('root');
 let alertContainer = document.querySelector('.alerts-container');
@@ -29,6 +30,7 @@ function goTo(callback_func){
         }, 250)
     }
 }
+
 function updateUI(res, title, subTitle){
     if(res.code == 401) location.reload(); // the code 401 is returned when the user is not logged in
     let genderWord = res.gender == "Homme" ? "M" : "Mme";
@@ -54,14 +56,22 @@ async function loadEtudiants(){
     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
     root.appendChild(new EtudiantsList().render());
 }
+async function loadProfessors(){
+    let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
+    updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
+    root.appendChild(new Professors().render());
+}
 
-window.addEventListener('load', loadEtudiants);
+window.addEventListener('load', loadProfessors);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
 })
 classesBtn.addEventListener('click', ()=>{
     goTo(loadClassses)
+})
+profsBtn.addEventListener('click', ()=>{
+    goTo(loadProfessors)
 })
 
 

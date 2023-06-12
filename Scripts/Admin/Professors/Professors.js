@@ -1,9 +1,10 @@
 import { loadData } from "../../utils.js";
 import { alertContainer, popContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
-import EtudiantForm from "./EtudiantForm.js";
+import ProfessorForm from "./ProfessorForm.js";
 
-export default class EtudiantsList{
+
+export default class Professors{
     constructor(filter=-1){
         this.filter = filter;
         this.listContainer = document.createElement("div");
@@ -11,32 +12,33 @@ export default class EtudiantsList{
         this.listHolder = document.createElement("div");
         this.list = document.createElement("table");
     }
-    async renderListRow(etudiant){
+    async renderListRow(professor){
         return `
-            <tr class="etduiant-row" data-id="${etudiant.cne} data-classeId="${etudiant.codeClasse}">
-                <td><img src="/Profile-pictures/Etudiants/${etudiant.image}"/></td>
-                <td>${etudiant.orderNb}</td>
-                <td>${etudiant.cne}</td>
-                <td>${etudiant.nom}</td>
-                <td>${etudiant.prenom}</td>
-                <td>${etudiant.classe}</td>
-                <td>${etudiant.birthday}</td>
+            <tr class="professor-row" data-id="${professor.codeProf}">
+                <td>
+                    <img src="/Profile-pictures/Teachers/${professor.image}"/>
+                </td>
+                <td>${professor.codeProf}</td>
+                <td>${professor.nomProf}</td>
+                <td>${professor.prenomProf}</td>
+                <td>${professor.email}</td>
+                <td>${professor.telephone}</td>
                 <td>
                     <div class=" action-icons">
-                        <i class="fas fa-user-edit edit-etudiant" data-id="${etudiant.cne}"></i>
-                        <i class="fas fa-trash delete-etudiant" data-id="${etudiant.cne}"></i>
+                        <i class="fas fa-user-edit edit-professor" data-id="${professor.codeProf}"></i>
+                        <i class="fas fa-trash delete-professor" data-id="${professor.codeProf}"></i>
                     </div> 
                 </td>
             </tr>
         `
     }
     async configDeleteButtons(list, url){
-        const deleteBtns = list.querySelectorAll('.delete-etudiant');
+        const deleteBtns = list.querySelectorAll('.delete-professor');
         deleteBtns.forEach(btn => {
             btn.addEventListener(
                 'click', 
                 async () => {
-                    let [res] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?delete=${btn.dataset.id}`);
+                    let [res] = await loadData(`/Admin/Inc/Api/professors.inc.php?delete=${btn.dataset.id}`);
                     if(res && res.code==200){
                         
                         alertContainer.appendChild(new Alert({
@@ -51,15 +53,15 @@ export default class EtudiantsList{
         })
     }
     async configEditButtons(list){
-        let editButtons = list.querySelectorAll('.edit-etudiant');
+        let editButtons = list.querySelectorAll('.edit-professor');
         editButtons = Array.prototype.slice.call(editButtons);
         editButtons.map(async btn => {
             btn.addEventListener('click', async ()=>{
                 console.log('clicked');
-                let [etd] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?by_cne=${btn.dataset.id}`);
-                popContainer.appendChild(new EtudiantForm(list, etd).render())
+                let [prf] = await loadData(`/Admin/Inc/Api/Professors.inc.php?by_codeProf=${btn.dataset.id}`);
+                popContainer.appendChild(new ProfessorForm(list, prf).render())
                 popContainer.classList.add("open-popup");
-                console.log(etd)
+                console.log(prf)
             })
         })
     }
@@ -70,12 +72,11 @@ export default class EtudiantsList{
             <thead>
                 <tr>
                     <td>Image</td>
-                    <td>N</td>
-                    <td>CNE</td>
+                    <td>code</td>
                     <td>Nom</td>
                     <td>Prenom</td>
-                    <td>Classe</td>
-                    <td>Date de naissance</td>
+                    <td>Email</td>
+                    <td>Telephone</td>
                     <td>Action</td>
                 </tr>
             </thead>
@@ -83,7 +84,7 @@ export default class EtudiantsList{
         if(res.length == 0){
             this.list.innerHTML += `
                 <tr>
-                    <td colspan="8" class="empty-list">Aucun etudiant</td>
+                    <td colspan="8" class="empty-list">Aucun professor</td>
                 </tr>
             `
             return;
@@ -115,9 +116,7 @@ export default class EtudiantsList{
                     'click', 
                     async (e)=>{
                         this.listContainer.classList.remove('remove-overflow')
-                        chooseOption(list,e.target, choosedOption)
-                        const filter =  e.target.dataset.value;
-                        await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
+                        await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
                     }
                 )
             }
@@ -134,25 +133,8 @@ export default class EtudiantsList{
         this.listHolder.setAttribute("class", "list-holder");
         this.list.setAttribute("class", "main-list");
 
-        let htmlOptions = '';
-        let selectedOption = "<div class='option' data-value='-1'>Tous les etudiants</div>"
-        if(this.filter != -1){
-            console.log('filter:', this.filter)
-            selectedOption = `<div class='the-option' data-value='${this.filter.codeClasse}'>${this.filter.niveauClasse}-${this.filter.nomClasse}</div>`
-        }
-        res.map(classe => htmlOptions += `<div class="option" data-value="${classe.codeClasse}">${classe.niveauClasse} ${classe.nomClasse} </div>`)
         this.listHead.innerHTML = `
-            <h3 class="list-title">Listes des etudiants</h3>
-            <div class="options">
-                <div class="choosed-option" id="choosed-option">
-                    ${selectedOption}
-                    <i class="fas fa-caret-down"></i>
-                </div>
-                <div class="options-list" id="options-list">
-                    <div class="option" data-value="-1">Tous les etudiants</div>
-                    ${htmlOptions}
-                </div>
-            </div>
+            <h3 class="list-title" style="margin-right: auto">Listes des professors</h3>
             <button class="list-btn list-export-btn" id="list-add-btn">
                 <span class="text">Exporter la liste</span>
                 <i class="fas fa-file-export"></i>
@@ -162,7 +144,7 @@ export default class EtudiantsList{
                 <i class="fas fa-file-import"></i>
             </button>
             <button class="list-btn list-add-btn" id="list-add-btn">
-                <span class="text">Ajouter un etudiant </span>
+                <span class="text">Ajouter un professor </span>
                 <i class="fas fa-plus"></i>
             </button>
         `;
@@ -171,13 +153,12 @@ export default class EtudiantsList{
         let choosedOption = this.listHead.querySelector('#choosed-option');
         let optionsList = this.listHead.querySelector('#options-list');
         let options = this.listHead.querySelectorAll('.option');
-        this.configOptionsInput(optionsList, choosedOption, options, this.optionClickHandler);
+        // this.configOptionsInput(optionsList, choosedOption, options, this.optionClickHandler);
 
-        let filter = choosedOption.children[0].dataset.value
-        await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
+        await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
 
         this.listHead.querySelector(".list-add-btn").addEventListener("click",() => {
-            popContainer.appendChild(new EtudiantForm(this.list).render())
+            popContainer.appendChild(new ProfessorForm(this.list).render())
             popContainer.classList.add("open-popup");
         })
 

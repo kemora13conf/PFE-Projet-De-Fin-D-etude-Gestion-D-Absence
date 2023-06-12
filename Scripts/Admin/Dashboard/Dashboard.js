@@ -20,7 +20,7 @@ export default class Dashboard{
             new Button({icon:'fas fa-users-line',title:"Classes"}, classesBtn).render(),
             new Button({icon:'fas fa-users',title:"Professeurs"}, profsBtn).render(),
             new Button({icon:'fas fa-user-graduate',title:"Etudiant"}, profsBtn).render(),
-            new Button({icon:'fas fa-school',title:"Seances"}, seancesBtn).render()
+            new Button({icon:'fas fa-school',title:"Seances"}, settingsBtn).render()
         )
         
         this.dashboard.append(
