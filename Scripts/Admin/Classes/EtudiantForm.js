@@ -219,9 +219,9 @@ export default class EtudiantForm {
             </div>
         `
         let close = this.form.querySelector('.fa-close');
-        close.addEventListener('click', ()=>{
-            this.closePopup()
-        });
+        let cancel = this.form.querySelector('.cancel');
+        close.addEventListener('click', this.closePopup);
+        cancel.addEventListener('click', this.closePopup);
 
         
         let img = this.form.querySelector('#etudiant-img');

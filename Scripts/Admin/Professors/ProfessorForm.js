@@ -33,8 +33,8 @@ export default class ProfessorForm {
                 <td>${professor.birthday}</td>
                 <td>
                     <div class=" action-icons">
-                        <i class="fas fa-user-edit edit-professor" data-id="${professor.cne}"></i>
-                        <i class="fas fa-trash delete-professor" data-id="${professor.cne}"></i>
+                        <i class="fas fa-user-edit edit-professor" data-id="${professor.codeProf}"></i>
+                        <i class="fas fa-trash delete-professor" data-id="${professor.codeProf}"></i>
                     </div> 
                 </td>
             </tr>
@@ -120,7 +120,7 @@ export default class ProfessorForm {
                 src="/Profile-pictures/Teachers/${this.professor ? this.professor.image : "professor.png"}" 
                 class="form-image" />
             <div class="form-body">
-                <div class="form-col">G
+                <div class="form-col">
                     <div class="form-group">
                         <label for="nom">Le nom</label>
                         <input 
@@ -191,9 +191,9 @@ export default class ProfessorForm {
             </div>
         `
         let close = this.form.querySelector('.fa-close');
-        close.addEventListener('click', ()=>{
-            this.closePopup()
-        });
+        let cancel = this.form.querySelector('.cancel');
+        close.addEventListener('click', this.closePopup);
+        cancel.addEventListener('click', this.closePopup);
 
         
         let img = this.form.querySelector('#professor-img');
