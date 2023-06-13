@@ -8,8 +8,16 @@
         exit;
     }
 
+    if(isset($_GET['professors-template'])){
+        $file_name = export_template('professors');
+        echo json_encode($file_name);
+    }
     if(isset($_GET['professors'])){
         $file_name = export_professeurs($conn);
+        echo json_encode($file_name);
+    }
+    if(isset($_GET['etudiants-template'])){
+        $file_name = export_template('etudiants');
         echo json_encode($file_name);
     }
     if(isset($_GET['etudiants']) && isset($_GET['filter'])){

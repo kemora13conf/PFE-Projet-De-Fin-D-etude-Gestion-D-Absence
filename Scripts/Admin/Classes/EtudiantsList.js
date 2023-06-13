@@ -1,4 +1,4 @@
-import { loadData, downloadFile } from "../../utils.js";
+import { loadData, downloadFile, sortEtudiantList } from "../../utils.js";
 import { alertContainer, popContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
 import EtudiantForm from "./EtudiantForm.js";
@@ -63,6 +63,7 @@ export default class EtudiantsList{
             })
         })
     }
+    
     async createListe(url){
         let [res] = await loadData(url);
         this.list.innerHTML = '';
@@ -88,12 +89,15 @@ export default class EtudiantsList{
             `
             return;
         }
+        
+        let etudiants = sortEtudiantList(res)
         await Promise.all(
-            res.map(async classe => {
+            etudiants.map(async classe => {
                 let row = await this.renderListRow(classe)
                 this.list.innerHTML += row;
-            })
-        )
+            }))
+
+
         // This function config the delete button
         await this.configDeleteButtons(this.list, url)
         await this.configEditButtons(this.list)

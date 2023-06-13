@@ -1,6 +1,6 @@
 import Alert from "../../Alert/Alert.js";
 import { alertContainer, popContainer } from "../Admin.js";
-import { loadData } from "../../utils.js";
+import { loadData, sortEtudiantList } from "../../utils.js";
 
 export default class ProfessorForm {
     constructor(list, professor=null){

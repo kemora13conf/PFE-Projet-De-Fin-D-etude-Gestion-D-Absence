@@ -51,4 +51,22 @@ function downloadFile(url, fileName) {
   link.remove();
 }
 
-export {loadData, wichHourNow, getDayName, parseHour, downloadFile}
+function sortEtudiantList(data){
+    let arr = data
+    let isTrue = true;
+    while(isTrue){
+        isTrue = false;
+        for(let i=0; i<data.length - 1; i++){
+            if(
+                Number(arr[i].orderNb) > Number(data[i+1].orderNb)
+            ){
+                let temp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1] = temp;
+                isTrue = true;
+            }
+        }
+    }
+    return arr;
+}
+export { loadData, wichHourNow, getDayName, parseHour, downloadFile, sortEtudiantList }

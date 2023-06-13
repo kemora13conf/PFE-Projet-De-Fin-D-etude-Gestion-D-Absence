@@ -1,18 +1,22 @@
-import { loadData, downloadFile } from "../../utils.js";
-import { alertContainer, popContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
-import ProfessorForm from "./ProfessorForm.js";
-import ImportForm from "./importForm.js";
+import { alertContainer, popContainer } from "../Admin.js";
+import { loadData, downloadFile } from "../../utils.js";
 
-
-export default class Professors{
-    constructor(filter=-1){
-        this.filter = filter;
-        this.listContainer = document.createElement("div");
-        this.listHead = document.createElement("div");
-        this.listHolder = document.createElement("div");
-        this.list = document.createElement("table");
+export default class ImportForm {
+    constructor(list, professor=null){
+        this.list = list;
+        this.professor = professor;
+        this.form = document.createElement('form');
     }
+    closePopup(){
+        popContainer.classList.add('close-popup');
+        setTimeout(() => {
+            popContainer.removeChild(popContainer.children[0]);
+            popContainer.classList.remove('close-popup');
+            popContainer.classList.remove('open-popup');
+        }, 500)
+    }
+
     async renderListRow(professor){
         return `
             <tr class="professor-row" data-id="${professor.codeProf}">
@@ -100,79 +104,54 @@ export default class Professors{
         await this.configDeleteButtons(this.list, url)
         await this.configEditButtons(this.list)
     }
-    
     async configElements(){
-        this.listContainer.setAttribute("class", "list-container");
-        this.listHead.setAttribute("class", "list-head");
-        this.listHolder.setAttribute("class", "list-holder");
-        this.list.setAttribute("class", "main-list");
+        this.form.setAttribute('class', 'import-professor-form add-update-form');
+        this.form.innerHTML = `
+            <i class="fas fa-close"></i>
+            <div class="form-head">
+                <h1 class="form-title">Ajouter un professor</h1>
+                <button class="import-btn">Télécharger un modèle</button>
+            </div>
+            <div class="form-body">
 
-        this.listHead.innerHTML = `
-            <h3 class="list-title" style="margin-right: auto">Listes des professors</h3>
-            <button class="list-btn list-export-btn" id="list-export-btn">
-                <span class="text">Exporter la liste</span>
-                <i class="fas fa-file-export"></i>
-            </button>
-            <button class="list-btn list-import-btn" id="list-import-btn">
-                <span class="text">Importer une liste</span>
-                <i class="fas fa-file-import"></i>
-            </button>
-            <button class="list-btn list-add-btn" id="list-add-btn">
-                <span class="text">Ajouter un professor </span>
-                <i class="fas fa-plus"></i>
-            </button>
-        `;
+                <div class="form-col">
+                    <div class="form-group">
+                        <input type="file" id="img-file" placeholder="Choisir une image">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-submit">
+                <button class="cancel" type="button">Annuler</button>
+                <button class='submit' type='submit'>Importer la liste</button>
+            </div>
+        `
+        let close = this.form.querySelector('.fa-close');
+        let cancel = this.form.querySelector('.cancel');
+        let importBtn = this.form.querySelector('.import-btn');
 
-        await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
+        close.addEventListener('click', this.closePopup);
+        cancel.addEventListener('click', this.closePopup);
+        importBtn.addEventListener('click', async ()=>{
+            // send a request to get the professor list as an xlsx file
+            await fetch('/Admin/Inc/Api/export.inc.php?professors-template')
+            .then(req => {
+                return req.json()
+            })
+            .then(res => {
+                // Usage
+                var fileUrl = `/Exported-Files/${res}`
+                var fileName = res;
+                
+                downloadFile(fileUrl, fileName);
+            })
+        })
 
-        // The add btn show the form to add a new Professor
-        this.listHead
-            .querySelector(".list-add-btn")
-                .addEventListener("click",() => {
-                    popContainer.appendChild(new ProfessorForm(this.list).render())
-                    popContainer.classList.add("open-popup");
-                }
-            )
-        
-        this.listHead
-            .querySelector(".list-export-btn")
-                .addEventListener("click", async () => {
-                    // send a request to get the professor list as an xlsx file
-                    await fetch('/Admin/Inc/Api/export.inc.php?professors')
-                        .then(req => {
-                            return req.json()
-                        })
-                        .then(res => {
-                            // Usage
-                            var fileUrl = `/Exported-Files/${res}`
-                            var fileName = res;
-                            
-                            downloadFile(fileUrl, fileName);
-                        })
-                }
-            )
-
-        this.listHead
-            .querySelector(".list-import-btn")
-                .addEventListener("click", async () => {
-                    popContainer.appendChild(new ImportForm(this.list).render())
-                    popContainer.classList.add("open-popup");
-                }
-            )
-            popContainer.appendChild(new ImportForm(this.list).render())
-            popContainer.classList.add("open-popup");
-
-
-        this.listHolder.appendChild(this.list);
-        this.listContainer.append(
-            this.listHead,
-            this.listHolder
-        );
-        
+        this.form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+        });
     }
-
     render(){
         this.configElements();
-        return this.listContainer;
+        return this.form;
     }
 }

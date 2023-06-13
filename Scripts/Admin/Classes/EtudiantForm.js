@@ -1,6 +1,6 @@
 import Alert from "../../Alert/Alert.js";
 import { alertContainer, popContainer } from "../Admin.js";
-import { loadData } from "../../utils.js";
+import { loadData, sortEtudiantList } from "../../utils.js";
 
 export default class EtudiantForm {
     constructor(list, etudiant=null){
@@ -111,12 +111,13 @@ export default class EtudiantForm {
             `
             return;
         }
+        let etudiants = sortEtudiantList(res)
         await Promise.all(
-            res.map(async classe => {
+            etudiants.map(async classe => {
                 let row = await this.renderListRow(classe)
                 this.list.innerHTML += row;
-            })
-        )
+            }))
+
         // This function config the delete button
         await this.configDeleteButtons(this.list, url)
         await this.configEditButtons(this.list)

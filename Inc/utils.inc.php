@@ -296,7 +296,7 @@
     }
 
     function export_template($who='etudiants'){
-        $export_to = '../Exported-Files/';
+        $export_to = __DIR__.'/../Exported-Files/';
 
         // Create a new Excel workbook and worksheet
         $spreadsheet = new Spreadsheet();
@@ -361,4 +361,5 @@
         $writer = new Xlsx($spreadsheet);
         $name = $who == 'etudiants' ? 'Etudiants-template' : 'Professors-template';
         $writer->save($export_to.$name.'.xlsx');
+        return $name.'.xlsx';
     }
