@@ -38,4 +38,17 @@ function parseHour(hour){
     }
 }
 
-export {loadData, wichHourNow, getDayName, parseHour}
+// Function to download a file
+function downloadFile(url, fileName) {
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+
+  // Trigger the click event
+  link.click();
+
+  // Cleanup the dynamically created element
+  link.remove();
+}
+
+export {loadData, wichHourNow, getDayName, parseHour, downloadFile}

@@ -1,4 +1,15 @@
 <?php
+
+    // Include the PhpSpreadsheet library
+    require __DIR__.'/../assests/vendor/autoload.php';
+
+    use PhpOffice\PhpSpreadsheet\Spreadsheet;
+    use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+    use PhpOffice\PhpSpreadsheet\Style\Font;
+    use PhpOffice\PhpSpreadsheet\Style\Alignment;
+    use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+
+
     function renderAdmin($user){
         $userObj = array(
             'codeProf' => $user['codeAdmin'],
@@ -109,4 +120,245 @@
 
         $rowCount = mysqli_num_rows($result);
         return $rowCount > 0;
+    }
+
+    function export_professeurs($conn){
+        $id = uniqid();
+        $export_to = __DIR__.'/../Exported-Files/';
+
+        // Retrieve data from the table
+        $query = "SELECT prenomProf, nomProf, genre, email, telephone FROM professeurs";
+        $result = mysqli_query($conn, $query);
+
+        // Create a new Excel workbook and worksheet
+        $spreadsheet = new Spreadsheet();
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        // Set the table headers
+        $headers = ['Prenom', 'Nom', 'Genre', 'Email', 'Telephone'];
+
+        // Set the table data
+        $data = [];
+
+        // fetch the data
+        while ($row = mysqli_fetch_assoc($result)){
+            $line = [$row['prenomProf'], $row['nomProf'], $row['genre'], $row['email'], $row['telephone']];
+            $data[count($data)] = $line;
+        }
+
+        // Set the starting cell for the table
+        $headerStartCell = 'B3';
+        $dataStartCel = 'B4';
+
+        // Write the headers to the worksheet
+        $headerRange = $worksheet->fromArray($headers, null, $headerStartCell, true);
+
+        // Apply style to each cell of the header
+        $headerStyleArray = [
+            'font' => [
+                'size' => 14,
+            ],
+            'alignment' => [
+                'wrapText' => true,
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => ['argb' => 'FFA0A0A0'],
+                'endColor' => ['argb' => 'FFFFFFFF'],
+            ],
+            'padding' => [
+                'top' => 20,
+                'right' => 10,
+                'bottom' => 20,
+                'left' => 10,
+            ],
+        ];
+        $worksheet->getStyle('B3:F3')->applyFromArray($headerStyleArray);
+        $worksheet->getRowDimension(3)->setRowHeight(30);
+
+        // Write the data to the worksheet
+        $worksheet->fromArray($data, null, $dataStartCel, true);
+
+        // Style the table
+        // Apply styles to the table
+        $styleArray = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ];
+        $tableRange = $headerStartCell . ':' . $worksheet->getCellByColumnAndRow(count($headers)+1, count($data) + 1+2)->getColumn() . (count($data) + 1+2);
+        $worksheet->getStyle($tableRange)->applyFromArray($styleArray);
+
+        // Auto-size columns for better readability
+        foreach (range('B', 'F') as $column) {
+            $worksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Create a new Excel writer object and save the spreadsheet as an XLSX file
+        $writer = new Xlsx($spreadsheet);
+        $name = "Professors-$id";
+        $writer->save($export_to.$name.'.xlsx');
+        return $name.'.xlsx';
+    }
+
+    function export_etudiants($conn, $filter=-1){
+        $id = uniqid();
+        $export_to = __DIR__.'/../Exported-Files/';
+
+        // Retrieve data from the table
+        $query = "SELECT * FROM etudiants";
+        if($filter != -1) $query = "SELECT * FROM etudiants WHERE codeClasse='$filter'";
+        $result = mysqli_query($conn, $query);
+
+        // Create a new Excel workbook and worksheet
+        $spreadsheet = new Spreadsheet();
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        // Set the table headers
+        $headers = ['CNE', 'Numéro d\'ordre', 'Prenom', 'Nom', 'Date de naissance', 'Genre', 'Classe', 'Email'];
+
+        // Set the table data
+        $data = [];
+
+        // fetch the data
+        while ($row = mysqli_fetch_assoc($result)){
+            $etd = renderEtudiant($row, $conn);
+            $line = [$etd['cne'], $etd['orderNb'], $etd['prenom'], $etd['nom'], $etd['birthday'], $etd['gender'], $etd['classe'], $etd['email']];
+            $data[count($data)] = $line;
+        }
+
+        // Set the starting cell for the table
+        $headerStartCell = 'B3';
+        $dataStartCel = 'B4';
+
+        // Write the headers to the worksheet
+        $headerRange = $worksheet->fromArray($headers, null, $headerStartCell, true);
+
+        // Apply style to each cell of the header
+        $headerStyleArray = [
+            'font' => [
+                'size' => 14,
+            ],
+            'alignment' => [
+                'wrapText' => true,
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => ['argb' => 'FFA0A0A0'],
+                'endColor' => ['argb' => 'FFFFFFFF'],
+            ],
+            'padding' => [
+                'top' => 20,
+                'right' => 10,
+                'bottom' => 20,
+                'left' => 10,
+            ],
+        ];
+        $worksheet->getStyle('B3:I3')->applyFromArray($headerStyleArray);
+        $worksheet->getRowDimension(3)->setRowHeight(30);
+
+        // Write the data to the worksheet
+        $worksheet->fromArray($data, null, $dataStartCel, true);
+
+        // Style the table
+        // Apply styles to the table
+        $styleArray = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ];
+        $tableRange = $headerStartCell . ':' . $worksheet->getCellByColumnAndRow(count($headers)+1, count($data) + 1+2)->getColumn() . (count($data) + 1+2);
+        $worksheet->getStyle($tableRange)->applyFromArray($styleArray);
+
+        // Auto-size columns for better readability
+        foreach (range('B', 'I') as $column) {
+            $worksheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Create a new Excel writer object and save the spreadsheet as an XLSX file
+        $writer = new Xlsx($spreadsheet);
+        $name = "Etudiants-$id";
+        $writer->save($export_to.$name.'.xlsx');
+        return $name.'.xlsx';
+
+    }
+
+    function export_template($who='etudiants'){
+        $export_to = '../Exported-Files/';
+
+        // Create a new Excel workbook and worksheet
+        $spreadsheet = new Spreadsheet();
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        // Set the table headers
+        $headers = ['CNE', 'Numéro d\'ordre', 'Prenom', 'Nom', 'Date de naissance', 'Genre', 'Classe', 'Email'];
+        if($who == 'professors'){
+            $headers = ['Prenom', 'Nom', 'Genre', 'Email', 'Telephone'];
+        }
+
+        // Set the starting cell for the table
+        $headerStartCell = 'B3';
+
+        // Write the headers to the worksheet
+        $headerRange = $worksheet->fromArray($headers, null, $headerStartCell, true);
+
+        // Apply style to each cell of the header
+        $headerStyleArray = [
+            'font' => [
+                'size' => 14,
+            ],
+            'alignment' => [
+                'wrapText' => true,
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => ['argb' => 'FFA0A0A0'],
+                'endColor' => ['argb' => 'FFFFFFFF'],
+            ],
+            'padding' => [
+                'top' => 20,
+                'right' => 10,
+                'bottom' => 20,
+                'left' => 10,
+            ],
+        ];
+
+        $worksheet->getRowDimension(3)->setRowHeight(30);
+
+        if($who == 'etudiants'){
+            $worksheet->getStyle('B3:I3')->applyFromArray($headerStyleArray);
+
+            // Auto-size columns for better readability
+            foreach (range('B', 'I') as $column) {
+                $worksheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+        else{
+            $worksheet->getStyle('B3:F3')->applyFromArray($headerStyleArray);
+
+            // Auto-size columns for better readability
+            foreach (range('B', 'F') as $column) {
+                $worksheet->getColumnDimension($column)->setAutoSize(true);
+            }
+        }
+
+        // Create a new Excel writer object and save the spreadsheet as an XLSX file
+        $writer = new Xlsx($spreadsheet);
+        $name = $who == 'etudiants' ? 'Etudiants-template' : 'Professors-template';
+        $writer->save($export_to.$name.'.xlsx');
     }

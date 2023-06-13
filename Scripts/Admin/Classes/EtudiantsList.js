@@ -1,4 +1,4 @@
-import { loadData } from "../../utils.js";
+import { loadData, downloadFile } from "../../utils.js";
 import { alertContainer, popContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
 import EtudiantForm from "./EtudiantForm.js";
@@ -153,7 +153,7 @@ export default class EtudiantsList{
                     ${htmlOptions}
                 </div>
             </div>
-            <button class="list-btn list-export-btn" id="list-add-btn">
+            <button class="list-btn list-export-btn" id="list-export-btn">
                 <span class="text">Exporter la liste</span>
                 <i class="fas fa-file-export"></i>
             </button>
@@ -176,10 +176,31 @@ export default class EtudiantsList{
         let filter = choosedOption.children[0].dataset.value
         await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
 
-        this.listHead.querySelector(".list-add-btn").addEventListener("click",() => {
-            popContainer.appendChild(new EtudiantForm(this.list).render())
-            popContainer.classList.add("open-popup");
-        })
+        this.listHead
+            .querySelector(".list-add-btn")
+                .addEventListener("click",() => {
+                    popContainer.appendChild(new EtudiantForm(this.list).render())
+                    popContainer.classList.add("open-popup");
+                })
+        
+        this.listHead
+            .querySelector(".list-export-btn")
+                .addEventListener("click", async () => {
+                    // send a request to get the professor list as an xlsx file
+                    let filter = choosedOption.children[0].dataset.value
+                    await fetch(`/Admin/Inc/Api/export.inc.php?etudiants&filter=${filter}`)
+                        .then(req => {
+                            return req.json()
+                        })
+                        .then(res => {
+                            // Usage
+                            var fileUrl = `/Exported-Files/${res}`
+                            var fileName = res;
+
+                            downloadFile(fileUrl, fileName);
+                        })
+                }
+            )
 
         this.listHolder.appendChild(this.list);
         this.listContainer.append(

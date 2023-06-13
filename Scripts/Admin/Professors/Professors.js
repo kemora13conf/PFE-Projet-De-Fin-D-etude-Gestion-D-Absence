@@ -1,4 +1,4 @@
-import { loadData } from "../../utils.js";
+import { loadData, downloadFile } from "../../utils.js";
 import { alertContainer, popContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
 import ProfessorForm from "./ProfessorForm.js";
@@ -108,7 +108,7 @@ export default class Professors{
 
         this.listHead.innerHTML = `
             <h3 class="list-title" style="margin-right: auto">Listes des professors</h3>
-            <button class="list-btn list-export-btn" id="list-add-btn">
+            <button class="list-btn list-export-btn" id="list-export-btn">
                 <span class="text">Exporter la liste</span>
                 <i class="fas fa-file-export"></i>
             </button>
@@ -124,10 +124,33 @@ export default class Professors{
 
         await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
 
-        this.listHead.querySelector(".list-add-btn").addEventListener("click",() => {
-            popContainer.appendChild(new ProfessorForm(this.list).render())
-            popContainer.classList.add("open-popup");
-        })
+        // The add btn show the form to add a new Professor
+        this.listHead
+            .querySelector(".list-add-btn")
+                .addEventListener("click",() => {
+                    popContainer.appendChild(new ProfessorForm(this.list).render())
+                    popContainer.classList.add("open-popup");
+                }
+            )
+        
+        this.listHead
+            .querySelector(".list-export-btn")
+                .addEventListener("click", async () => {
+                    // send a request to get the professor list as an xlsx file
+                    await fetch('/Admin/Inc/Api/export.inc.php?professors')
+                        .then(req => {
+                            return req.json()
+                        })
+                        .then(res => {
+                            // Usage
+                            var fileUrl = `/Exported-Files/${res}`
+                            var fileName = res;
+                            
+                            downloadFile(fileUrl, fileName);
+                        })
+                }
+            )
+
 
         this.listHolder.appendChild(this.list);
         this.listContainer.append(
