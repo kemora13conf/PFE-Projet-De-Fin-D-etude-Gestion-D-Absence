@@ -1,6 +1,7 @@
 import { getDayName, loadData } from "../../utils.js";
-import { alertContainer } from "../Admin.js";
+import { root, goTo, alertContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
+import SeancePage from "./SeancePage.js";
 
 export default class Seances{
     constructor(){
@@ -96,7 +97,7 @@ export default class Seances{
     renderRow(data){
         if(data != null){
             return `
-                <tr data-id="${data.codeSeance}">
+                <tr data-id="${data.codeSeance}" class="seance">
                     <td class="classes-col">${data.niveauClass+' '+data.nomClass}</td>
                     <td class="classes-col">${data.nomMatiere}</td>
                     <td class="classes-col">${getDayName(data.jour)} - ${data.period}</td>
@@ -148,6 +149,14 @@ export default class Seances{
                 this.deleteSeance(btn.dataset.id);
             });
         })
+        let seances = this.list.querySelectorAll('.seance');
+        seances.forEach((seance) => {
+            seance.addEventListener('dblclick', () =>{
+                goTo(()=>{
+                    root.appendChild(new SeancePage().render());
+                })
+            })
+        });
     }
     render(){
         this.createHeader();

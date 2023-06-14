@@ -15,6 +15,22 @@
         echo json_encode(['code'=>200, 'message'=>'Une seance a été suprimer']);
         exit;
     }
+
+    if(isset($_GET['seance'])){
+        $seanceId = $_GET['seance'];
+        $sceance = "SELECT * From sceance sc, classes cl, matiere m, professeurs prf
+                    WHERE sc.codeClasse=cl.codeClasse 
+                    AND sc.codeMatiere=m.codeMatiere
+                    AND sc.codeProf = prf.codeProf
+                    AND sc.codeSeance='$seanceId'";
+        $req = mysqli_query($conn, $sceance) or die(mysqli_error($conn));
+        $res = array();
+        while ($row = mysqli_fetch_assoc($req)){
+            $res[count($res)] = renderSeances($row);
+        }
+        echo json_encode($res);
+        exit;
+    }
     
     if(isset($_GET['classe']) and $_GET['classe'] != '-1'){
         $classId = $_GET['classe'];

@@ -5,6 +5,7 @@ import EtudiantsList from "./Classes/EtudiantsList.js";
 import Dashboard from "./Dashboard/Dashboard.js";
 import Professors from "./Professors/Professors.js";
 import Seances from "./Seances/Seances.js";
+import SeancePage from "./Seances/SeancePage.js";
 
 let root = document.getElementById('root');
 let alertContainer = document.querySelector('.alerts-container');
@@ -68,7 +69,14 @@ async function loadSeances(){
     root.appendChild(new Seances().render());
 }
 
-window.addEventListener('load', loadSeances);
+async function loadSeancePage(){
+    let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
+    updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
+    root.appendChild(new SeancePage(19).render());
+}
+
+
+window.addEventListener('load', loadSeancePage);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
