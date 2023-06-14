@@ -15,24 +15,27 @@
         $sceances = '';
 
         if($filter == 'all'){
-            $sceances = "SELECT * From sceance sc, classes cl, matiere m 
+            $sceances = "SELECT * From sceance sc, classes cl, matiere m, professeurs prf
                         WHERE sc.codeClasse=cl.codeClasse 
                         AND sc.codeMatiere=m.codeMatiere
+                        AND sc.codeProf=prf.codeProf
                         AND sc.codeProf='$uid[0]'";
             if(intval($jour) != -1) $sceances .= "AND jour='$jour'";
         }
         else if ($filter == 'second'){
-            $sceances = "SELECT * From sceance sc, classes cl, matiere m 
+            $sceances = "SELECT * From sceance sc, classes cl, matiere m, professeurs prf
                         WHERE sc.codeClasse=cl.codeClasse 
                         AND sc.codeMatiere=m.codeMatiere
+                        AND sc.codeProf=prf.codeProf
                         AND cl.niveauClasse=2
                         AND sc.codeProf='$uid[0]'";
             if(intval($jour) != -1) $sceances .= "AND jour='$jour'";
         }
         else if ($filter == 'first'){
-            $sceances = "SELECT * From sceance sc, classes cl, matiere m 
+            $sceances = "SELECT * From sceance sc, classes cl, matiere m, professeurs prf
                         WHERE sc.codeClasse=cl.codeClasse 
                         AND sc.codeMatiere=m.codeMatiere
+                        AND sc.codeProf=prf.codeProf
                         AND cl.niveauClasse=1
                         AND sc.codeProf='$uid[0]'";
             if(intval($jour) != -1) $sceances .= "AND jour='$jour'";
@@ -52,9 +55,10 @@
         echo json_encode($res);
         exit;
     }
-    $sceances = "SELECT * From sceance sc, classes cl, matiere m 
+    $sceances = "SELECT * From sceance sc, classes cl, matiere m, professeurs prf
                     WHERE sc.codeClasse=cl.codeClasse 
                     AND sc.codeMatiere=m.codeMatiere
+                        AND sc.codeProf=prf.codeProf
                     AND sc.codeProf='$uid[0]'";
     $req = mysqli_query($conn, $sceances) or die(mysqli_error($conn));
     $res = array();

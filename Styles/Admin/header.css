@@ -132,7 +132,7 @@ header{
     cursor: pointer;
     transition: all .3s ease-in-out;
 }
-.profile--menu button{
+.profile--menu button:nth-child(1){
     color: var(--dark);
     background: var(--light-secondary);
 }

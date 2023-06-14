@@ -2,6 +2,7 @@ import { loadData, downloadFile, sortEtudiantList } from "../../utils.js";
 import { alertContainer, popContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
 import EtudiantForm from "./EtudiantForm.js";
+import ImportForm from "./importForm.js";
 
 export default class EtudiantsList{
     constructor(filter=-1){
@@ -175,7 +176,7 @@ export default class EtudiantsList{
         let choosedOption = this.listHead.querySelector('#choosed-option');
         let optionsList = this.listHead.querySelector('#options-list');
         let options = this.listHead.querySelectorAll('.option');
-        this.configOptionsInput(optionsList, choosedOption, options, this.optionClickHandler);
+        this.configOptionsInput(optionsList, choosedOption, options);
 
         let filter = choosedOption.children[0].dataset.value
         await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
@@ -203,6 +204,14 @@ export default class EtudiantsList{
 
                             downloadFile(fileUrl, fileName);
                         })
+                }
+            )
+        
+        this.listHead
+            .querySelector(".list-import-btn")
+                .addEventListener("click", async () => {
+                    popContainer.appendChild(new ImportForm(this.list).render())
+                    popContainer.classList.add("open-popup");
                 }
             )
 

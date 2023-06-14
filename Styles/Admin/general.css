@@ -30,6 +30,7 @@ main{
     background: rgba(255, 255, 255, 0.041);
     backdrop-filter: blur(2px);
     z-index: 1000;
+    overflow-y: auto;
 }
 .open-popup{
     display: flex;

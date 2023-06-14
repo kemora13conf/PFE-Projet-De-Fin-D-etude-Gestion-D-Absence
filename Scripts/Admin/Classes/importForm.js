@@ -1,11 +1,11 @@
 import Alert from "../../Alert/Alert.js";
 import { alertContainer, popContainer } from "../Admin.js";
-import { loadData, downloadFile } from "../../utils.js";
+import { loadData, downloadFile, sortEtudiantList } from "../../utils.js";
 
 export default class ImportForm {
-    constructor(list, professor=null){
+    constructor(list, etudiant=null){
         this.list = list;
-        this.professor = professor;
+        this.etudiant = etudiant;
         this.form = document.createElement('form');
     }
     closePopup(){
@@ -17,33 +17,32 @@ export default class ImportForm {
         }, 500)
     }
 
-    async renderListRow(professor){
+    async renderListRow(etudiant){
         return `
-            <tr class="professor-row" data-id="${professor.codeProf}">
-                <td>
-                    <img src="/Profile-pictures/Teachers/${professor.image}"/>
-                </td>
-                <td>${professor.codeProf}</td>
-                <td>${professor.nomProf}</td>
-                <td>${professor.prenomProf}</td>
-                <td>${professor.email}</td>
-                <td>${professor.telephone}</td>
+            <tr class="etduiant-row" data-id="${etudiant.cne} data-classeId="${etudiant.codeClasse}">
+                <td><img src="/Profile-pictures/Etudiants/${etudiant.image}"/></td>
+                <td>${etudiant.orderNb}</td>
+                <td>${etudiant.cne}</td>
+                <td>${etudiant.nom}</td>
+                <td>${etudiant.prenom}</td>
+                <td>${etudiant.classe}</td>
+                <td>${etudiant.birthday}</td>
                 <td>
                     <div class=" action-icons">
-                        <i class="fas fa-user-edit edit-professor" data-id="${professor.codeProf}"></i>
-                        <i class="fas fa-trash delete-professor" data-id="${professor.codeProf}"></i>
+                        <i class="fas fa-user-edit edit-etudiant" data-id="${etudiant.cne}"></i>
+                        <i class="fas fa-trash delete-etudiant" data-id="${etudiant.cne}"></i>
                     </div> 
                 </td>
             </tr>
         `
     }
     async configDeleteButtons(list, url){
-        const deleteBtns = list.querySelectorAll('.delete-professor');
+        const deleteBtns = list.querySelectorAll('.delete-etudiant');
         deleteBtns.forEach(btn => {
             btn.addEventListener(
                 'click', 
                 async () => {
-                    let [res] = await loadData(`/Admin/Inc/Api/professors.inc.php?delete=${btn.dataset.id}`);
+                    let [res] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?delete=${btn.dataset.id}`);
                     if(res && res.code==200){
                         
                         alertContainer.appendChild(new Alert({
@@ -58,15 +57,15 @@ export default class ImportForm {
         })
     }
     async configEditButtons(list){
-        let editButtons = list.querySelectorAll('.edit-professor');
+        let editButtons = list.querySelectorAll('.edit-etudiant');
         editButtons = Array.prototype.slice.call(editButtons);
         editButtons.map(async btn => {
             btn.addEventListener('click', async ()=>{
-                console.log('clicked');
-                let [prf] = await loadData(`/Admin/Inc/Api/Professors.inc.php?by_codeProf=${btn.dataset.id}`);
-                popContainer.appendChild(new ProfessorForm(list, prf).render())
+                let [etd] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?by_cne=${btn.dataset.id}`);
+                const formEtd = new EtudiantForm(list, etd).render();
+                popContainer.appendChild(formEtd);
                 popContainer.classList.add("open-popup");
-                console.log(prf)
+                console.log(etd)
             })
         })
     }
@@ -77,11 +76,12 @@ export default class ImportForm {
             <thead>
                 <tr>
                     <td>Image</td>
-                    <td>code</td>
+                    <td>N</td>
+                    <td>CNE</td>
                     <td>Nom</td>
                     <td>Prenom</td>
-                    <td>Email</td>
-                    <td>Telephone</td>
+                    <td>Classe</td>
+                    <td>Date de naissance</td>
                     <td>Action</td>
                 </tr>
             </thead>
@@ -89,23 +89,24 @@ export default class ImportForm {
         if(res.length == 0){
             this.list.innerHTML += `
                 <tr>
-                    <td colspan="8" class="empty-list">Aucun professor</td>
+                    <td colspan="8" class="empty-list">Aucun etudiant</td>
                 </tr>
             `
             return;
         }
+        let etudiants = sortEtudiantList(res)
         await Promise.all(
-            res.map(async classe => {
+            etudiants.map(async classe => {
                 let row = await this.renderListRow(classe)
                 this.list.innerHTML += row;
-            })
-        )
+            }))
+
         // This function config the delete button
         await this.configDeleteButtons(this.list, url)
         await this.configEditButtons(this.list)
     }
     async configElements(){
-        this.form.setAttribute('class', 'import-professor-form add-update-form');
+        this.form.setAttribute('class', 'import-etudiant-form add-update-form');
         this.form.innerHTML = `
             <i class="fas fa-close"></i>
             <div class="form-head">
@@ -132,8 +133,8 @@ export default class ImportForm {
         close.addEventListener('click', this.closePopup);
         cancel.addEventListener('click', this.closePopup);
         importBtn.addEventListener('click', async ()=>{
-            // send a request to get the professor list as an xlsx file
-            await fetch('/Admin/Inc/Api/export.inc.php?professors-template')
+            // send a request to get the etudiant list as an xlsx file
+            await fetch('/Admin/Inc/Api/export.inc.php?etudiants-template')
             .then(req => {
                 return req.json()
             })
@@ -152,7 +153,7 @@ export default class ImportForm {
 
             if (file.files.length != 0) {
                 let formData = new FormData();
-                formData.append('professors', true);
+                formData.append('etudiants', true);
                 formData.append('list', file.files[0])
 
                 await fetch(
@@ -170,11 +171,13 @@ export default class ImportForm {
                         msg_title: 'Success',
                         msg_text: res.message
                     }, alertContainer).render())
-                    
-                    await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
+
+                    let choosedOption = document.querySelector('#choosed-option');
+                    const filter =  choosedOption.children[0].dataset.value;
+                    await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
                 })
                 .catch(err => {
-                    this.closePopup();
+                    console.log(err);
                     alertContainer.appendChild(new Alert({
                         type: 'warning',
                         msg_title: 'échoué',

@@ -117,7 +117,7 @@ export default class AddClasse {
             .catch(err => {
                 alertContainer.appendChild(new Alert({
                     type: 'warning',
-                    msg_title: 'Failed',
+                    msg_title: 'échoué',
                     msg_text: "Une erreur s'est produite. Veuillez réessayer"
                 }, alertContainer).render())
             })

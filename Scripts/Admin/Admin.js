@@ -4,6 +4,7 @@ import ClassesList from "./Classes/ClassesList.js";
 import EtudiantsList from "./Classes/EtudiantsList.js";
 import Dashboard from "./Dashboard/Dashboard.js";
 import Professors from "./Professors/Professors.js";
+import Seances from "./Seances/Seances.js";
 
 let root = document.getElementById('root');
 let alertContainer = document.querySelector('.alerts-container');
@@ -19,7 +20,7 @@ let dashboardBtn =  document.getElementById('dashboard-btn');
 let statistiqueBtn = document.getElementById('statistique-btn');
 let profsBtn = document.getElementById('profs-btn');
 let classesBtn = document.getElementById('classes-btn');
-let settingsBtn = document.getElementById('settings-btn');
+let seancesBtn = document.getElementById('seances-btn');
 
 function goTo(callback_func){
     if(root.children.length != 0){
@@ -61,8 +62,13 @@ async function loadProfessors(){
     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
     root.appendChild(new Professors().render());
 }
+async function loadSeances(){
+    let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
+    updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
+    root.appendChild(new Seances().render());
+}
 
-window.addEventListener('load', loadProfessors);
+window.addEventListener('load', loadSeances);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
@@ -72,6 +78,9 @@ classesBtn.addEventListener('click', ()=>{
 })
 profsBtn.addEventListener('click', ()=>{
     goTo(loadProfessors)
+})
+seancesBtn.addEventListener('click', ()=>{
+    goTo(loadSeances)
 })
 
 
@@ -90,5 +99,5 @@ export {
     statistiqueBtn,
     profsBtn,
     classesBtn,
-    settingsBtn
+    seancesBtn
 }

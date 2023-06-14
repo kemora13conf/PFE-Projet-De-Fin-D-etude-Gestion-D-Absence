@@ -253,14 +253,13 @@ export default class ProfessorForm {
                     msg_title: 'Success',
                     msg_text: res.message
                 }, alertContainer).render())
-                console.log("creating list")
                 await this.createListe(`/Admin/Inc/Api/Professors.inc.php`);
             })
             .catch(err => {
                 console.log(`${err}`);
                 alertContainer.appendChild(new Alert({
                     type: 'warning',
-                    msg_title: 'Failed',
+                    msg_title: 'échoué',
                     msg_text: "Une erreur s'est produite. Veuillez réessayer"
                 }, alertContainer).render())
             })

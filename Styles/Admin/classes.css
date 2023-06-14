@@ -63,8 +63,8 @@ tr:hover{
     background: var(--bg-color);
 }
 td{
-    text-align: center;
-    padding: 10px 5px;
+    text-align: start;
+    padding: 10px 5px 10px 10px;
 }
 td i.fa-trash{
     margin: 0px auto;
@@ -156,6 +156,9 @@ td i.fa-user-edit:hover{
     outline: none;
     border-radius: 7.5px;
     color: var(--dark);
+}
+.form-group input[type="file"]{
+    cursor: pointer;
 }
 .form-group select:hover{
     cursor: pointer;

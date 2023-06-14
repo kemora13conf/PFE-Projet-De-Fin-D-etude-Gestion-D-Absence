@@ -159,8 +159,6 @@ export default class Professors{
                     popContainer.classList.add("open-popup");
                 }
             )
-            popContainer.appendChild(new ImportForm(this.list).render())
-            popContainer.classList.add("open-popup");
 
 
         this.listHolder.appendChild(this.list);

@@ -131,18 +131,30 @@ export default class EtudiantForm {
             </div>
             <img 
                 id="etudiant-img"
-                src="/Profile-pictures/Etudiants/${this.etudiant ? this.etudiant.image : "etudiant.png"}" 
+                src="/Profile-pictures/Etudiants/${this.etudiant ? this.etudiant.image : "default.png"}" 
                 class="form-image" />
             <div class="form-body">
                 <div class="form-col">
-                    <div class="form-group">
-                        <label for="cne">CNE</label>
-                        <input 
-                            type="text" 
-                            required
-                            id="cne" 
-                            placeholder="Code nationale etudiant"
-                            value="${this.etudiant != null ? this.etudiant.cne : ''}" />
+                    <div class="form-body ">
+                        <div class="form-col">
+                            <label for="cne">CNE</label>
+                            <input 
+                                type="text" 
+                                required
+                                id="cne" 
+                                placeholder="Code nationale etudiant"
+                                value="${this.etudiant != null ? this.etudiant.cne : ''}" />
+                        </div>
+                        <div class="form-col">
+                            <label for="orderNb">Numéro d'ordre</label>
+                            <input 
+                                type="number" 
+                                required
+                                min="0" 
+                                id="orderNb" 
+                                placeholder="Numéro d'ordre"
+                                value="${this.etudiant != null ? this.etudiant.orderNb : ''}" />
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="nom">Le nom</label>
@@ -237,6 +249,7 @@ export default class EtudiantForm {
         this.form.addEventListener('submit', async (e) => {
             e.preventDefault();
             let cne = this.form.querySelector('#cne').value;
+            let orderNb = this.form.querySelector('#orderNb').value;
             let nom = this.form.querySelector('#nom').value;
             let prenom = this.form.querySelector('#prenom').value;
             let email = this.form.querySelector('#email').value;
@@ -246,6 +259,7 @@ export default class EtudiantForm {
 
             let data = {
                 cne: cne,
+                orderNb: orderNb,
                 nom: nom,
                 prenom: prenom,
                 email: email,
@@ -256,12 +270,20 @@ export default class EtudiantForm {
 
             if(
                 this.isEmpty(cne) 
+                || this.isEmpty(orderNb)
                 || this.isEmpty(nom)
                 || this.isEmpty(prenom)
                 || this.isEmpty(email)
                 || this.isEmpty(birthday)
                 || this.isEmpty(classe)
-            ) return;
+            ){
+                alertContainer.appendChild(new Alert({
+                    type: 'warning',
+                    msg_title: 'échoué',
+                    msg_text: "Tous les input sont requis!"
+                }, alertContainer).render())
+                return
+            };
 
             let formData = new FormData();
             if(this.etudiant != null){
@@ -294,10 +316,9 @@ export default class EtudiantForm {
                 await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
             })
             .catch(err => {
-                console.log(err);
                 alertContainer.appendChild(new Alert({
                     type: 'warning',
-                    msg_title: 'Failed',
+                    msg_title: 'échoué',
                     msg_text: "Une erreur s'est produite. Veuillez réessayer"
                 }, alertContainer).render())
             })

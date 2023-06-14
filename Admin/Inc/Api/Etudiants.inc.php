@@ -14,6 +14,7 @@
     if(isset($_POST['add-etudiant'])){
         $data = json_decode($_POST['add-etudiant'], true);
         $cne = $data['cne'];
+        $orderNb = $data['orderNb'];
         $nom = $data['nom'];
         $prenom = $data['prenom'];
         $email = $data['email'];
@@ -21,7 +22,7 @@
         $classe = $data['classe'];
         $gender = $data['gender'];
         $mdp = md5(uniqid(time()));
-        $image = 'etudiant.png';
+        $image = 'default.png';
         if(isset($_FILES['image'])){
             $tmp_name = $_FILES['image']['tmp_name'];
             $name = basename($_FILES['image']['name']);
@@ -31,7 +32,7 @@
         mysqli_query(
             $conn,
             "INSERT INTO `etudiants`(`CNE`, `numOrdre`, `nomEtudiant`, `prenomEtudiant`, `dateDeNaissance`, `genre`, `image`, `codeClasse`, `email`, `password`)
-            VALUES ('$cne', 10, '$nom', '$prenom', '$birthday', '$gender', '$image', '$classe', '$email', '$mdp')"
+            VALUES ('$cne', '$orderNb', '$nom', '$prenom', '$birthday', '$gender', '$image', '$classe', '$email', '$mdp')"
         ) or die(mysqli_error($conn));
         echo json_encode(['code'=>200, 'message'=>'Un etudiant été ajouter!']);
         exit;
@@ -41,6 +42,7 @@
         $data = json_decode($_POST['update-etudiant'], true);
         $cne = $data['cne'];
         $originalcne = $data['originalcne'];
+        $orderNb = $data['orderNb'];
         $nom = $data['nom'];
         $prenom = $data['prenom'];
         $email = $data['email'];
@@ -59,6 +61,13 @@
                     WHERE cne='$originalcne'"
                 ) or die(mysqli_error($conn));
                 $originalcne = $cne;
+            }
+            if(!checkField($conn, 'etudiants', 'cne', $originalcne, 'numOrdre', $orderNb)){
+                mysqli_query(
+                    $conn, 
+                    "UPDATE etudiants SET numOrdre='$orderNb'
+                    WHERE cne='$originalcne'"
+                ) or die(mysqli_error($conn));
             }
             if(!checkField($conn, 'etudiants', 'cne', $originalcne, 'nomEtudiant', $nom)){
                 mysqli_query(

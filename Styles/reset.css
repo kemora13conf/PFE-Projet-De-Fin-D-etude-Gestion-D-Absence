@@ -76,6 +76,12 @@
 body{
     width: 100%;
     background-color: var(--bg-color);
+    touch-action: manipulation;
+    user-select: none;
+    -ms-content-zooming: none;
+    -ms-user-select: none;
+    -ms-touch-action: manipulation;
+    zoom: reset;
 }
 @keyframes fadeIn {
     0%{

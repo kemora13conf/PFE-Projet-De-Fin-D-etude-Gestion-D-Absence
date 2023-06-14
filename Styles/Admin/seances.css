@@ -1,0 +1,23 @@
+.seances-list-container{
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    border-radius: 15px;
+    box-shadow: rgba(50, 50, 93, 0.116) 0px 25px 50px -10px,
+                rgba(0, 0, 0, 0.178) 0px 15px 30px -15px;
+    overflow: hidden;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+.options{
+    margin-right: unset;
+}
+.main-list-holder{
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.main-list-holder::-webkit-scrollbar{
+    height: 10px;
+}
+.main-list-holder::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+}

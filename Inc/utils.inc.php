@@ -8,6 +8,7 @@
     use PhpOffice\PhpSpreadsheet\Style\Font;
     use PhpOffice\PhpSpreadsheet\Style\Alignment;
     use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+    use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
     function renderAdmin($user){
@@ -80,6 +81,8 @@
     function renderSeances($items, $total=0){
         $seanceObj = array(
             'codeProf' => $items['codeProf'],
+            'nomProf' => $items['nomProf'],
+            'prenomProf' => $items['prenomProf'],
             'codeClass' => $items['codeClasse'],
             'nomClass' => $items['nomClasse'],
             'niveauClass' => $items['niveauClasse'],
@@ -363,3 +366,95 @@
         $writer->save($export_to.$name.'.xlsx');
         return $name.'.xlsx';
     }
+
+function import_etudiants($file, $conn){
+    $spreadsheet = IOFactory::load($file['tmp_name']);
+    $worksheet = $spreadsheet->getActiveSheet();
+
+    $query = "INSERT INTO 
+                `etudiants`(`CNE`, `numOrdre`, `nomEtudiant`, `prenomEtudiant`, `dateDeNaissance`, `genre`, `codeClasse`, `email`, `password`) 
+                VALUES ";
+
+    $etudiants = [];
+    foreach ($worksheet->getRowIterator() as $row) {
+        $rowData = [];
+        foreach ($row->getCellIterator() as $cell) {
+
+            if ($cell->getValue() == null) continue;
+            if ($cell->getValue() == 'CNE') continue;
+            if ($cell->getValue() == 'Numéro d\'ordre') continue;
+            if ($cell->getValue() == 'Prenom') continue;
+            if ($cell->getValue() == 'Nom') continue;
+            if ($cell->getValue() == 'Date de naissance') continue;
+            if ($cell->getValue() == 'Genre') continue;
+            if ($cell->getValue() == 'Classe') continue;
+            if ($cell->getValue() == 'Email') continue;
+
+            $rowData[] = $cell->getValue();
+        }
+        $rowData != [] ? $etudiants[] = $rowData : null;
+    }
+    foreach($etudiants as $etd){
+        $cne = $etd[0].chr(rand(97, 122));
+        $orderNb = $etd[1];
+        $prenom = $etd[2];
+        $nom = $etd[3];
+        $birthday = $etd[4];
+        $genre = $etd[5];
+        $classe = explode('-', $etd[6]);
+        $niveauClasse = $classe[0];
+        $nomClasse = $classe[1];
+        $email = $etd[7];
+        $mdp = md5(uniqid(time()));
+
+        $req = mysqli_query(
+            $conn, 
+            "SELECT codeClasse FROM classes WHERE nomClasse='$nomClasse' AND niveauClasse='$niveauClasse' LIMIT 1",
+        );
+        $codeClasse = mysqli_fetch_assoc($req)['codeClasse'];
+
+        $query .= "('$cne', '$orderNb', '$nom', '$prenom', '$birthday', '$genre', '$codeClasse', '$email', '$mdp'),";
+    }
+    $query = substr($query, 0, strlen($query)-1);
+    mysqli_query($conn, $query) or die(mysqli_error($conn));
+    return true;
+}
+
+function import_professors($file, $conn){
+    $spreadsheet = IOFactory::load($file['tmp_name']);
+    $worksheet = $spreadsheet->getActiveSheet();
+
+    $query = "INSERT INTO 
+                `professeurs`(`codeProf`, `nomProf`, `prenomProf`, `email`, `genre`, `password`, `telephone`) 
+                VALUES";
+
+    $professors = [];
+    foreach ($worksheet->getRowIterator() as $row) {
+        $rowData = [];
+        foreach ($row->getCellIterator() as $cell) {
+
+            if ($cell->getValue() == null) continue;
+            if ($cell->getValue() == 'Prenom') continue;
+            if ($cell->getValue() == 'Nom') continue;
+            if ($cell->getValue() == 'Genre') continue;
+            if ($cell->getValue() == 'Email') continue;
+            if ($cell->getValue() == 'Telephone') continue;
+
+            $rowData[] = $cell->getValue();
+        }
+        $rowData != [] ? $professors[] = $rowData : null;
+    }
+    foreach($professors as $prof){
+        $prenom = $prof[0];
+        $nom = $prof[1];
+        $genre = $prof[2];
+        $email = $prof[3];
+        $phone = $prof[4];
+        $mdp = md5(uniqid(time()));
+
+        $query .= "(null, '$nom', '$prenom', '$email', '$genre', '$mdp', '$phone'),";
+    }
+    $query = substr($query, 0, strlen($query)-1);
+    mysqli_query($conn, $query) or die(mysqli_error($conn));
+    return true;
+}
