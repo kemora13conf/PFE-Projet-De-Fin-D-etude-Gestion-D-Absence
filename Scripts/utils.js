@@ -38,4 +38,35 @@ function parseHour(hour){
     }
 }
 
-export {loadData, wichHourNow, getDayName, parseHour}
+// Function to download a file
+function downloadFile(url, fileName) {
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+
+  // Trigger the click event
+  link.click();
+
+  // Cleanup the dynamically created element
+  link.remove();
+}
+
+function sortEtudiantList(data){
+    let arr = data
+    let isTrue = true;
+    while(isTrue){
+        isTrue = false;
+        for(let i=0; i<data.length - 1; i++){
+            if(
+                Number(arr[i].orderNb) > Number(data[i+1].orderNb)
+            ){
+                let temp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1] = temp;
+                isTrue = true;
+            }
+        }
+    }
+    return arr;
+}
+export { loadData, wichHourNow, getDayName, parseHour, downloadFile, sortEtudiantList }

@@ -33,8 +33,6 @@
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        
-
         $username = $_POST['username'];
         $req = mysqli_query($conn, "SELECT * FROM professeurs WHERE email = '$username' LIMIT 1");
         $user = mysqli_fetch_assoc($req);

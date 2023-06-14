@@ -1,8 +1,8 @@
-import { loadData } from "../../utils.js";
+import { loadData, downloadFile, sortEtudiantList } from "../../utils.js";
 import { alertContainer, popContainer } from "../Admin.js";
 import Alert from "../../Alert/Alert.js";
-import AddClasse from "./AddClass.js";
 import EtudiantForm from "./EtudiantForm.js";
+import ImportForm from "./importForm.js";
 
 export default class EtudiantsList{
     constructor(filter=-1){
@@ -64,6 +64,7 @@ export default class EtudiantsList{
             })
         })
     }
+    
     async createListe(url){
         let [res] = await loadData(url);
         this.list.innerHTML = '';
@@ -89,12 +90,15 @@ export default class EtudiantsList{
             `
             return;
         }
+        
+        let etudiants = sortEtudiantList(res)
         await Promise.all(
-            res.map(async classe => {
+            etudiants.map(async classe => {
                 let row = await this.renderListRow(classe)
                 this.list.innerHTML += row;
-            })
-        )
+            }))
+
+
         // This function config the delete button
         await this.configDeleteButtons(this.list, url)
         await this.configEditButtons(this.list)
@@ -154,7 +158,7 @@ export default class EtudiantsList{
                     ${htmlOptions}
                 </div>
             </div>
-            <button class="list-btn list-export-btn" id="list-add-btn">
+            <button class="list-btn list-export-btn" id="list-export-btn">
                 <span class="text">Exporter la liste</span>
                 <i class="fas fa-file-export"></i>
             </button>
@@ -172,15 +176,44 @@ export default class EtudiantsList{
         let choosedOption = this.listHead.querySelector('#choosed-option');
         let optionsList = this.listHead.querySelector('#options-list');
         let options = this.listHead.querySelectorAll('.option');
-        this.configOptionsInput(optionsList, choosedOption, options, this.optionClickHandler);
+        this.configOptionsInput(optionsList, choosedOption, options);
 
         let filter = choosedOption.children[0].dataset.value
         await this.createListe(`/Admin/Inc/Api/Etudiants.inc.php?class=${filter}`);
 
-        this.listHead.querySelector(".list-add-btn").addEventListener("click",() => {
-            popContainer.appendChild(new EtudiantForm(this.list).render())
-            popContainer.classList.add("open-popup");
-        })
+        this.listHead
+            .querySelector(".list-add-btn")
+                .addEventListener("click",() => {
+                    popContainer.appendChild(new EtudiantForm(this.list).render())
+                    popContainer.classList.add("open-popup");
+                })
+        
+        this.listHead
+            .querySelector(".list-export-btn")
+                .addEventListener("click", async () => {
+                    // send a request to get the professor list as an xlsx file
+                    let filter = choosedOption.children[0].dataset.value
+                    await fetch(`/Admin/Inc/Api/export.inc.php?etudiants&filter=${filter}`)
+                        .then(req => {
+                            return req.json()
+                        })
+                        .then(res => {
+                            // Usage
+                            var fileUrl = `/Exported-Files/${res}`
+                            var fileName = res;
+
+                            downloadFile(fileUrl, fileName);
+                        })
+                }
+            )
+        
+        this.listHead
+            .querySelector(".list-import-btn")
+                .addEventListener("click", async () => {
+                    popContainer.appendChild(new ImportForm(this.list).render())
+                    popContainer.classList.add("open-popup");
+                }
+            )
 
         this.listHolder.appendChild(this.list);
         this.listContainer.append(

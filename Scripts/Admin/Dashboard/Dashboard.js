@@ -1,5 +1,8 @@
-import { classesBtn, profsBtn, settingsBtn } from '../Admin.js';
+import { classesBtn, profsBtn, seancesBtn, goTo } from '../Admin.js';
+import EtudiantsList from '../Classes/EtudiantsList.js';
 import Button from "./Button.js";
+
+
 export default class Dashboard{
     constructor(currentUser){
         this.currentUser = currentUser;
@@ -19,7 +22,15 @@ export default class Dashboard{
         this.buttons.append(
             new Button({icon:'fas fa-users-line',title:"Classes"}, classesBtn).render(),
             new Button({icon:'fas fa-users',title:"Professeurs"}, profsBtn).render(),
-            new Button({icon:'fas fa-user-graduate',title:"Etudiant"}, profsBtn).render(),
+            new Button(
+                {icon:'fas fa-user-graduate',title:"Etudiant"}, 
+                null, 
+                ()=>{
+                    goTo(()=>{
+                        root.appendChild(new EtudiantsList().render());
+                    })
+                }
+            ).render(),
             new Button({icon:'fas fa-school',title:"Seances"}, seancesBtn).render()
         )
         

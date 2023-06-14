@@ -63,8 +63,8 @@ tr:hover{
     background: var(--bg-color);
 }
 td{
-    text-align: center;
-    padding: 10px 5px;
+    text-align: start;
+    padding: 10px 5px 10px 10px;
 }
 td i.fa-trash{
     margin: 0px auto;
@@ -118,6 +118,28 @@ td i.fa-user-edit:hover{
                 rgba(0, 0, 0, 0.178) 0px 15px 30px -15px;
 
 }
+.form-head{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+.import-btn{
+    padding: 5px 10px;
+    background: var(--light-secondary);
+    color: var(--dark);
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.import-btn:hover{
+    background: var(--dark);
+    color: var(--light);
+}
 .form-group{
     width: 100%;
     display: flex;
@@ -134,6 +156,9 @@ td i.fa-user-edit:hover{
     outline: none;
     border-radius: 7.5px;
     color: var(--dark);
+}
+.form-group input[type="file"]{
+    cursor: pointer;
 }
 .form-group select:hover{
     cursor: pointer;
@@ -176,5 +201,8 @@ td i.fa-user-edit:hover{
 @media only screen and (max-width: 630px){
     .list-head{
         padding: 10px;
+    }
+    .form-head h1{
+        font-size: 1.2em;
     }
 }

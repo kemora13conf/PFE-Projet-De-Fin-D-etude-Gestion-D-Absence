@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../../Styles/Admin/dashboard.css">
     <link rel="stylesheet" href="../../Styles/Admin/classes.css">
     <link rel="stylesheet" href="../../Styles/Admin/etudiants.css">
+    <link rel="stylesheet" href="../../Styles/Admin/seances.css">
     <link rel="stylesheet" href="../../Styles/Admin/general.css">
 
     <!-- LINK ALL THE JS FILES -->
@@ -47,6 +48,10 @@
             <div class="profile--menu">
                 <button id="profile-btn">
                     <i class="fas fa-user"></i>
+                    <p>Profile</p>
+                </button>
+                <button id="settings-btn">
+                    <i class="fas fa-gear"></i>
                     <p>Profile</p>
                 </button>
                 <a href="./Inc/logout.php">
@@ -83,9 +88,9 @@
                 </button>
             </li>
                 <li class="list">
-                    <button id="settings-btn">
-                    <i class="awesome-icon fas fa-gear"></i>                       
-                        <div class="text">paramétre</div>
+                    <button id="seances-btn">
+                    <i class="awesome-icon fas fa-landmark"></i>                       
+                        <div class="text">Séances</div>
                     </button>
                 </li>
             <div class="indicator">

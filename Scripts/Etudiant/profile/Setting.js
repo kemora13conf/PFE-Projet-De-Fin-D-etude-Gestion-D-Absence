@@ -146,7 +146,7 @@ export default class Setting{
                 }else{
                     alertContainer.appendChild(new Alert({
                         type: 'warning',
-                        msg_title: 'Failed',
+                        msg_title: 'échoué',
                         msg_text: res.message
                     }, alertContainer).render())
                 }
@@ -154,7 +154,7 @@ export default class Setting{
             .catch(err => {
                 alertContainer.appendChild(new Alert({
                     type: 'warning',
-                    msg_title: 'Failed',
+                    msg_title: 'échoué',
                     msg_text: "Une erreur s'est produite. Veuillez réessayer"
                 }, alertContainer).render())
             })

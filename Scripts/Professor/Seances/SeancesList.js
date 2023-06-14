@@ -57,7 +57,6 @@ export default class SeanceList{
         })
     }
     deleteSeance(id){
-        console.log(id)
         fetch(
             "/Professor/Inc/Api/DeleteSeance.inc.php",
             {
