@@ -1,4 +1,4 @@
-import { loadData } from "../../utils.js";
+import { loadData, parseHour } from "../../utils.js";
 
 
 
@@ -12,16 +12,29 @@ export default class SeancePage{
         this.header = document.createElement('div');
         this.listHolder = document.createElement('div');
         this.list = document.createElement('table');
+        this.currentDate = (() => {
+            // Create a new Date object
+            const currentDate = new Date();
+
+            // Extract the year, month, and day from the Date object
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+
+            // Create the formatted date string
+            return `${year}-${month}-${day}`;
+        })();
     }
     async getSeance(){
         const [res] = await loadData(`/Admin/Inc/Api/Seances.inc.php?seance=${this.id}`);
+        console.log(res);
         this.seance = await res[0]
     }
     async getClasse(){
         const [res] = await loadData(`/Admin/Inc/Api/Classes.inc.php?etudiants=${this.seance.codeClass}`)
         this.classe = res;
     }
-    async getAbsence(){
+    async getAbsence(date){
         let allAbsence = [];
         await Promise.all(
             this.classe
@@ -31,7 +44,7 @@ export default class SeancePage{
                         arr: []
                     }
                     for (let i = Number(this.seance.heure); i < Number(this.seance.heure) + Number(this.seance.duree); i++){
-                        const [res] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?isAbsent=true&cne=${etudiant.cne}&codeSeance=${this.seance.codeSeance}&date=2023-06-16&hour=${i}`)
+                        const [res] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?isAbsent=true&cne=${etudiant.cne}&codeSeance=${this.seance.codeSeance}&date=${date}&hour=${i}`)
                         etd.arr.push(res);
                     }
                     allAbsence.push(etd);
@@ -43,7 +56,7 @@ export default class SeancePage{
     async init(){
         await this.getSeance();
         await this.getClasse();
-        await this.getAbsence();
+        await this.getAbsence(this.currentDate);
     }
 
     async createHeader(){
@@ -51,18 +64,145 @@ export default class SeancePage{
 
         console.log(this.seance, this.classe, this.absence);
 
-        this.header.setAttribute('class', 'list-header');
+        this.header.setAttribute('class', 'seance-header');
         this.header.innerHTML = `
             <h1 class="list-header-title">${this.seance.nomMatiere}</h1>
+            <div class="flex">
+                <div class="seance-detail">
+                    <span class="small-text">Ensigner par : <h3>${this.seance.nomProf} ${this.seance.prenomProf}</h3></span> 
+                    <span class="small-text">À : <h3>${this.seance.nomClass}</h3></span> 
+                </div>
+                <div class="seance-date-div">
+                    <input type="date" class="seance-date" id="seance-date" />
+                </div>
+            </div>
         `
+        const date = this.header.querySelector('#seance-date')
+        date.value = this.currentDate;
+        date.addEventListener('change', async ()=>{
+            this.currentDate = date.value;
+            await this.getAbsence(date.value)
+            await this.createList();
+        })
+    }
+
+    renderUserData(user, htmlInpts, cmt){
+        return {
+            cne:user.cne,
+            orderNb:user.orderNb,
+            prenomEtudiant:user.prenom,
+            nomEtudiant:user.nom,
+            date: this.currentDate,
+            image: user.image,
+            comment: cmt,
+            htmlInpts: htmlInpts
+        }
+    }
+    sortEtudiantList(data){
+        let arr = data
+        let isTrue = true;
+        while(isTrue){
+            isTrue = false;
+            for(let i=0; i<data.length - 1; i++){
+                if(
+                    Number(arr[i].orderNb) > Number(data[i+1].orderNb)
+                ){
+                    let temp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = temp;
+                    isTrue = true;
+                }
+            }
+        }
+        return arr;
+    }
+    parseToggleButtons(data){
+        let commentContainer = '';
+        let htmlInpts = '';
+        
+        for(let i = Number(this.seance.heure); i<Number(this.seance.heure)+Number(this.seance.duree); i++){
+            if(data.arr[i - Number(this.seance.heure)].isAbsent){
+                
+                htmlInpts += `<td class="hour ${data.arr[i - Number(this.seance.heure)].justification == '1'? 'justifier' : 'non-justifier'}"><input type="checkbox" data-id="${data.cne}" value="${i}" checked/></td>`;
+                if(data.arr[i - Number(this.seance.heure)].comment != '')
+                    commentContainer = data.arr[i - Number(this.seance.heure)].comment;
+            }
+            else{
+                htmlInpts += `<td class="hour"><input type="checkbox" data-id="${data.cne}" value="${i}" /></td>`;
+            }
+        }
+        return [htmlInpts,commentContainer];
+    }
+
+    handleResponse(res){
+        let arr = [];
+        res.map((item) => { 
+            // This loop get all the etudiant and render a dictionary holding necessry data
+            // for each one with inputs checked if the etudiant were absent
+            this.absence.forEach(element => {
+                if(element.cne == item.cne){
+                    let [htmlInpts,commentContainer] = this.parseToggleButtons(element);
+                    let dict = this.renderUserData(item, htmlInpts, commentContainer)
+                    arr.push(dict)
+                }
+            });
+        })
+        let sortedData = this.sortEtudiantList(arr); // Sort by order number the list of etudiants
+        console.log(sortedData)
+        sortedData.forEach(
+            async(item) => {
+                // This loop render a row in the table for each etudiant.
+                let row = this.renderEtudiantRow(item);
+                this.list.innerHTML += row;
+            })
+    }
+    renderEtudiantRow(user){
+        let row = `<tr data-id='${user.cne}'>
+                        <td class="orderNb">${user.orderNb}</td>
+                        <td class="etudiant-name">
+                            <div class="name-data">
+                                <img src="../../Profile-pictures/Etudiants/${user.image}" alt="Adelghani El Mouak" />
+                                <p>${user.prenomEtudiant} ${user.nomEtudiant}</p>
+                            </div>
+                        </td>
+                        ${user.htmlInpts}
+                        <td class="comment">
+                            ${user.comment ? user.comment : "########"}
+                        </td>
+                    </tr>`
+        return row;
+    }
+    async createList(){
+        this.list.innerHTML = '';
+        let thead = `<thead>
+                        <tr>
+                            <th class="orderNb">#</th>
+                            <th class="name">Non et Prenom</th>`
+        for(
+                let i = Number(this.seance.heure);
+                i < Number(this.seance.heure) + Number(this.seance.duree);
+                i++
+            ){
+            thead += `<th class="hour${i}">${parseHour(i)}</th>`;
+        }
+        thead += `<th class="comment">Commentaire</th>
+                  </tr>
+                  </thead`;
+        this.list.innerHTML = thead;
+
+        if(this.classe.length != 0){
+            this.handleResponse(this.classe)
+        }else this.list.innerHTML = `<tr><td colspan="${4+this.data.duree}">Aucun Etudiant</td><td`;
+
     }
 
 
-    render(){
-
-        this.createHeader();
-
-        this.seancePage.setAttribute('class', 'seance-conatiner');
+    async render(){
+        await this.createHeader();
+        await this.createList();
+        this.seancePage.setAttribute('class', 'seance-container');
+        this.listHolder.setAttribute('class', 'list-holder');
+        this.list.setAttribute('class', 'seance-etudiant-list');
 
         this.listHolder.appendChild(this.list);
         this.seancePage.append(

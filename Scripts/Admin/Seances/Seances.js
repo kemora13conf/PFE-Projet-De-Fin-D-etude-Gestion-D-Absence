@@ -152,8 +152,8 @@ export default class Seances{
         let seances = this.list.querySelectorAll('.seance');
         seances.forEach((seance) => {
             seance.addEventListener('dblclick', () =>{
-                goTo(()=>{
-                    root.appendChild(new SeancePage().render());
+                goTo(async ()=>{
+                    root.appendChild(await new SeancePage(seance.dataset.id).render());
                 })
             })
         });

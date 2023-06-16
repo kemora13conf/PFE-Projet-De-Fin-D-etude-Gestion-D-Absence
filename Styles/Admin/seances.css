@@ -21,3 +21,82 @@
 .main-list-holder::-webkit-scrollbar-thumb{
     border-radius: 5px;
 }
+
+
+/* the style for the seance page */
+.seance-container{
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    border-radius: 15px;
+    box-shadow: rgba(50, 50, 93, 0.116) 0px 25px 50px -10px,
+                rgba(0, 0, 0, 0.178) 0px 15px 30px -15px;
+    overflow: hidden;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+.seance-header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+}
+.seance-header .flex{
+    justify-content: space-between;
+
+}
+.seance-detail{
+    width: 100%;
+}
+.small-text{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    line-height: 23px;
+}
+.seance-date-div{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.seance-date{
+    padding: 10px 15px;
+    width: 100%;
+    max-width: 250px;
+    margin-left: auto;
+    color: var(--dark);
+    border: none;
+    outline: none;
+    border-radius: 7.5px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1),
+                0px 0px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.list-holder{
+    width: 100%;
+}
+.seance-etudiant-list{
+    width: 100%;
+    border-collapse: collapse
+}
+thead th{
+    padding: 10px 5px;
+    text-align: start;
+    white-space: nowrap;
+}
+thead tr:hover{
+    background-color: var(--light-secondary);
+}
+tr .name-data{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+tr .name-data p{
+    font-size: 14px;
+}
+tr .comment{
+    font-size: 14px;
+}
