@@ -28,6 +28,17 @@
         echo json_encode(['classe'=>mysqli_fetch_assoc($req)]);
         exit;
     }
+    
+    if(isset($_GET['etudiants'])){
+        $id = $_GET['etudiants'];
+        $req = mysqli_query($conn, "SELECT * FROM etudiants WHERE codeClasse=$id") or die(mysqli_error($conn));
+        $etudiants = array();
+        while($row = mysqli_fetch_assoc($req)){
+            $etudiants[count($etudiants)] = renderEtudiant($row, $conn);
+        }
+        echo json_encode($etudiants);
+        exit;
+    }
     if(isset($_GET['getTotal'])){
         $id = $_GET['getTotal'];
         $req = mysqli_query($conn, "SELECT COUNT(*) as total FROM etudiants WHERE codeClasse=$id") or die(mysqli_error($conn));

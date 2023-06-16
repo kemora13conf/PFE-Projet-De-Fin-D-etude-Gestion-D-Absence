@@ -10,11 +10,16 @@
     
     if(isset($_GET['codeClass'])){
         // this returns the filteres etudiant all or only the absents or only the presents
-        if(isset($_GET['filter']) and isset($_GET['date'])
-            and isset($_GET['duree'])){
+        if(
+            isset($_GET['filter']) 
+            and isset($_GET['date'])
+            and isset($_GET['hour'])
+            and isset($_GET['duree'])
+        ){
             $codeClass = $_GET['codeClass'];
             $filter  = $_GET['filter'];
             $date = $_GET['date'];
+            $huere = $_GET['hour'];
             $duree = $_GET['duree'];
             $codeSeance = $_GET['codeSeance'];
             
@@ -27,7 +32,7 @@
             $Etudiants = array();
             while($res = mysqli_fetch_assoc($req)){
                 $cne = $res['CNE'];
-                for($hour=1; $hour<=$duree; $hour++){
+                for($hour=$huere; $hour<$huere + $duree; $hour++){
                     $sql2 = "SELECT CNE FROM etudiants
                                 WHERE CNE IN (SELECT CNE FROM abscenter
                                 WHERE CNE='$cne' AND codeSeance='$codeSeance' AND date='$date' AND heure='$hour')";

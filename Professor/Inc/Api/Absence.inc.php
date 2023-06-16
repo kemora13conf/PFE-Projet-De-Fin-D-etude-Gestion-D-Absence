@@ -25,6 +25,7 @@
         }else{
             echo json_encode($checkAbsence);
         }
+        exit;
     }
     if(isset($_POST)){
         $data = file_get_contents('php://input');

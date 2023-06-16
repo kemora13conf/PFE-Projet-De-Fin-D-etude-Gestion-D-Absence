@@ -17,14 +17,39 @@ export default class SeancePage{
         const [res] = await loadData(`/Admin/Inc/Api/Seances.inc.php?seance=${this.id}`);
         this.seance = await res[0]
     }
+    async getClasse(){
+        const [res] = await loadData(`/Admin/Inc/Api/Classes.inc.php?etudiants=${this.seance.codeClass}`)
+        this.classe = res;
+    }
+    async getAbsence(){
+        let allAbsence = [];
+        await Promise.all(
+            this.classe
+                .map(async etudiant => {
+                    let etd = {
+                        cne: etudiant.cne,
+                        arr: []
+                    }
+                    for (let i = Number(this.seance.heure); i < Number(this.seance.heure) + Number(this.seance.duree); i++){
+                        const [res] = await loadData(`/Admin/Inc/Api/Etudiants.inc.php?isAbsent=true&cne=${etudiant.cne}&codeSeance=${this.seance.codeSeance}&date=2023-06-16&hour=${i}`)
+                        etd.arr.push(res);
+                    }
+                    allAbsence.push(etd);
+                })
+        )
+        this.absence = allAbsence
+    }
 
     async init(){
         await this.getSeance();
+        await this.getClasse();
+        await this.getAbsence();
     }
 
     async createHeader(){
-        
         await this.init();
+
+        console.log(this.seance, this.classe, this.absence);
 
         this.header.setAttribute('class', 'list-header');
         this.header.innerHTML = `

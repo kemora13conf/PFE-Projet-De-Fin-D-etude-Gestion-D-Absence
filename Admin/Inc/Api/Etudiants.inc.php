@@ -11,6 +11,26 @@
 
     $uploads_dir = '../../../Profile-pictures/Etudiants';
 
+    if(
+        isset($_GET['isAbsent']) 
+        and isset($_GET['cne']) 
+        and isset($_GET['codeSeance']) 
+        and isset($_GET['date']) 
+        and isset($_GET['hour'])
+    ){
+        $cne = $_GET['cne'];
+        $codeSeance = $_GET['codeSeance'];
+        $date = $_GET['date']; 
+        $hour = $_GET['hour'];
+        $checkAbsence = isAbsent($conn, $cne, $codeSeance, $date, $hour);
+        if($checkAbsence['isAbsent']){
+            echo json_encode($checkAbsence);
+        }else{
+            echo json_encode($checkAbsence);
+        }
+        exit;
+    }
+
     if(isset($_POST['add-etudiant'])){
         $data = json_decode($_POST['add-etudiant'], true);
         $cne = $data['cne'];

@@ -45,7 +45,6 @@ export default class ListeAbsence{
                     arr[i] = arr[i+1];
                     arr[i+1] = temp;
                     isTrue = true;
-                    console.log('SWITCH')
                 }
             }
         }
@@ -63,6 +62,7 @@ export default class ListeAbsence{
                         arr.push(dict)
                     }))
         let sortedData = this.sortEtudiantList(arr); // Sort by order number the list of etudiants
+        console.log(sortedData)
         sortedData.forEach(
             async(item) => {
                 // This loop render a row in the table for each etudiant.
@@ -100,7 +100,7 @@ export default class ListeAbsence{
             chooseDate(this.datesList,e.target, this.choosedDate)
             let filter = e.target.dataset.value;
             let [res] = await loadData(
-                `/Professor/Inc/Api/Class.inc.php?codeClass=${this.data.codeClass}&codeSeance=${this.data.codeSeance}&filter=${filter}&date=${this.data.date}&duree=${this.data.duree}`
+                `/Professor/Inc/Api/Class.inc.php?codeClass=${this.data.codeClass}&codeSeance=${this.data.codeSeance}&filter=${filter}&date=${this.data.date}&hour=${this.data.heure}&duree=${this.data.duree}`
                 );
             if(res.length != 0){
                 this.listBody.innerHTML = '';
@@ -208,15 +208,17 @@ export default class ListeAbsence{
     async parseDuree(cne){
         let commentContainer = '';
         let htmlInpts = '';
-        for(let i = 0; i<this.data.duree; i++){
-            let [res] = await loadData(`/Professor/Inc/Api/Absence.inc.php?isAbsent=yes&codeSeance=${this.data.codeSeance}&cne=${cne}&date=${this.data.date}&hour=${i+1}`);
+        console.log(this.data)
+        for(let i = this.data.heure; i<this.data.heure+this.data.duree; i++){
+            let [res] = await loadData(`/Professor/Inc/Api/Absence.inc.php?isAbsent=yes&codeSeance=${this.data.codeSeance}&cne=${cne}&date=${this.data.date}&hour=${i}`);
+            console.log(res)
 
             if(res && res.isAbsent){
-                htmlInpts += `<td class="hour"><input type="checkbox" data-id="${cne}" value="${i+1}" checked/></td>`;
+                htmlInpts += `<td class="hour ${res.justification == '1'? 'justifier' : 'non-justifier'}"><input type="checkbox" data-id="${cne}" value="${i}" checked/></td>`;
                 commentContainer = res.comment;
             }
             else{
-                htmlInpts += `<td class="hour"><input type="checkbox" data-id="${cne}" value="${i+1}" /></td>`;
+                htmlInpts += `<td class="hour"><input type="checkbox" data-id="${cne}" value="${i}" /></td>`;
             }
         }
         return [htmlInpts,commentContainer];

@@ -132,6 +132,12 @@ td{
     height: 20px;
     margin: 12.5px 0px;
 }
+.justifier{
+    background: var(--green);
+}
+.non-justifier{
+    background: var(--red);
+}
 .comment{
     border-right: none;
     min-width: 250px
