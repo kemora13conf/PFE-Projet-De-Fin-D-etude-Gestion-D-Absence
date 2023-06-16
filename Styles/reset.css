@@ -237,3 +237,7 @@ input:-webkit-autofill:active{
         margin-top: -100px;
     }
 }
+
+.flex{
+    display: flex;
+}

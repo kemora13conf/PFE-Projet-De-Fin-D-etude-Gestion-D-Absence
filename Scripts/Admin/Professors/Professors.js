@@ -16,10 +16,10 @@ export default class Professors{
     async renderListRow(professor){
         return `
             <tr class="professor-row" data-id="${professor.codeProf}">
+                <td>${professor.codeProf}</td>
                 <td>
                     <img src="/Profile-pictures/Teachers/${professor.image}"/>
                 </td>
-                <td>${professor.codeProf}</td>
                 <td>${professor.nomProf}</td>
                 <td>${professor.prenomProf}</td>
                 <td>${professor.email}</td>
@@ -72,13 +72,13 @@ export default class Professors{
         this.list.innerHTML = `
             <thead>
                 <tr>
-                    <td>Image</td>
-                    <td>code</td>
-                    <td>Nom</td>
-                    <td>Prenom</td>
-                    <td>Email</td>
-                    <td>Telephone</td>
-                    <td>Action</td>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Email</th>
+                    <th>Telephone</th>
+                    <th>Action</th>
                 </tr>
             </thead>
         `

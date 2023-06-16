@@ -120,11 +120,11 @@ export default class Seances{
         this.list.innerHTML = `
             <thead>
                 <tr>
-                    <td class="classes-col">Classes</td>
-                    <td class="classes-col">Matiere</td>
-                    <td class="classes-col">Temps</td>
-                    <td class="classes-col">Professeur</td>
-                    <td class="classes-col">Action</td>
+                    <th class="classes-col">Classes</th>
+                    <th class="classes-col">Matiere</th>
+                    <th class="classes-col">Temps</th>
+                    <th class="classes-col">Professeur</th>
+                    <th class="classes-col">Action</th>
                 </tr>
             </thead>
         `
@@ -152,8 +152,8 @@ export default class Seances{
         let seances = this.list.querySelectorAll('.seance');
         seances.forEach((seance) => {
             seance.addEventListener('dblclick', () =>{
-                goTo(()=>{
-                    root.appendChild(new SeancePage().render());
+                goTo(async ()=>{
+                    root.appendChild(await new SeancePage(seance.dataset.id).render());
                 })
             })
         });

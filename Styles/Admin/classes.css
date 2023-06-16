@@ -38,8 +38,8 @@
     width: 100%;
     overflow: hidden;
     overflow-x: auto;
-    box-shadow: inset rgba(50, 50, 93, 0.116) 0px 0px 50px -10px, 
-                inset rgba(0, 0, 0, 0.178) 0px 0px 30px -15px;
+    /* box-shadow: inset rgba(50, 50, 93, 0.116) 0px 0px 50px -10px, 
+                inset rgba(0, 0, 0, 0.178) 0px 0px 30px -15px; */
 }
 .list-holder::-webkit-scrollbar{
     height: 10px;

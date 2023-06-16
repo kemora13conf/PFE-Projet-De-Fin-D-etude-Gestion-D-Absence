@@ -241,7 +241,6 @@ export default class ListeAbsence{
         return row;
     }
     async createList(){
-        console.log(this.data);
         this.listContainer.setAttribute('class', 'etudiant-list-container')
         this.list.setAttribute('class', 'etudiant-list');
         let thead = `<tr>
