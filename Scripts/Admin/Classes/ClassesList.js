@@ -30,10 +30,10 @@ export default class ClassesList{
         this.list.innerHTML = `
             <thead>
                 <tr>
-                    <td>Nom du classe</td>
-                    <td>Niveau du classe</td>
-                    <td>Totale des etudiants</td>
-                    <td>Action</td>
+                    <th>Nom du classe</th>
+                    <th>Niveau du classe</th>
+                    <th>Totale des etudiants</th>
+                    <th>Action</th>
                 </tr>
             </thead>
         `

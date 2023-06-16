@@ -71,14 +71,14 @@ export default class EtudiantsList{
         this.list.innerHTML = `
             <thead>
                 <tr>
-                    <td>Image</td>
-                    <td>N</td>
-                    <td>CNE</td>
-                    <td>Nom</td>
-                    <td>Prenom</td>
-                    <td>Classe</td>
-                    <td>Date de naissance</td>
-                    <td>Action</td>
+                    <th>Image</th>
+                    <th>N</th>
+                    <th>CNE</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Classe</th>
+                    <th>Date de naissance</th>
+                    <th>Action</th>
                 </tr>
             </thead>
         `
