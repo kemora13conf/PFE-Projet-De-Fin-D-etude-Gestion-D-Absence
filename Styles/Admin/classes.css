@@ -158,17 +158,19 @@ td i.fa-user-edit:hover{
     color: var(--dark);
 }
 .form-group input[type="file"]{
+    width: 100%;
     cursor: pointer;
 }
 .form-group select:hover{
     cursor: pointer;
 }
 .form-group button[type="submit"]{
-    padding: 10px 20px;
+    padding: 15px 20px;
     background: var(--dark);
     color: var(--light);
     border: none;
     outline: none;
+    font-size: 16px;
     border-radius: 7.5px;
     cursor: pointer;
     transition: all .3s ease;

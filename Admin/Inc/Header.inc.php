@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="../../Styles/Admin/classes.css">
     <link rel="stylesheet" href="../../Styles/Admin/etudiants.css">
     <link rel="stylesheet" href="../../Styles/Admin/seances.css">
+    <link rel="stylesheet" href="../../Styles/Admin/profile.css">
+    <link rel="stylesheet" href="../../Styles/Admin/setting.css">
     <link rel="stylesheet" href="../../Styles/Admin/general.css">
 
     <!-- LINK ALL THE JS FILES -->
@@ -52,7 +54,7 @@
                 </button>
                 <button id="settings-btn">
                     <i class="fas fa-gear"></i>
-                    <p>Profile</p>
+                    <p>Paramètre</p>
                 </button>
                 <a href="./Inc/logout.php">
                     <i class="fas fa-right-from-bracket"></i>

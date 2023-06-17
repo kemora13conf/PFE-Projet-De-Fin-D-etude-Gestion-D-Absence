@@ -1,5 +1,6 @@
 import { loadData, parseHour } from "../../utils.js";
-
+import { alertContainer } from "../Admin.js";
+import Alert from "../../Alert/Alert.js";
 
 
 export default class SeancePage{
@@ -165,7 +166,6 @@ export default class SeancePage{
             });
         })
         let sortedData = this.sortEtudiantList(arr); // Sort by order number the list of etudiants
-        console.log(sortedData)
         sortedData.forEach(
             (item) => {
                 // This loop render a row in the table for each etudiant.
@@ -201,7 +201,14 @@ export default class SeancePage{
                         }
                     )
                     .then(res => res.json())
-                    .then(res => console.log(res));
+                    .then(res => console.log(res))
+                    .catch(err => {
+                        alertContainer.appendChild(new Alert({
+                            type: 'success',
+                            msg_title: 'Success',
+                            msg_text: res.message
+                        }, alertContainer).render())
+                    });
                 }else{
                     formData.append('un-justify',JSON.stringify(postedData));
                     // send a request to justify the absent in that seance
@@ -213,7 +220,14 @@ export default class SeancePage{
                         }
                     )
                     .then(res => res.json())
-                    .then(res => console.log(res));
+                    .then(res => console.log(res))
+                    .catch(err => {
+                        alertContainer.appendChild(new Alert({
+                            type: 'success',
+                            msg_title: 'Success',
+                            msg_text: res.message
+                        }, alertContainer).render())
+                    });
                 }
                 btn.classList.toggle('toggle-btn-activated');
             });

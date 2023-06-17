@@ -1,6 +1,6 @@
 import { loadData } from "../../utils";
-import { root, goTo, loadSettings } from "../Professor.js";
-import { alertContainer } from "../Professor.js";
+import { root, goTo, loadSettings } from "../../Professor/Professor.js";
+import { alertContainer } from "../../Professor/Professor.js";
 import Alert from "../../Alert/Alert.js";
 
 export default class Setting{
@@ -121,7 +121,7 @@ export default class Setting{
                     <div class="form-group gender-group">
                         <div class="male">
                             <input type="radio" id="male" class="gender" value="Homme" name="gender">
-                            <label for="male">Hommme</label>
+                            <label for="male">Homme</label>
                         </div>
                         <div class="female">
                             <input type="radio" id="female" class="gender" value="Femme" name="gender">

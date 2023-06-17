@@ -13,7 +13,7 @@
 
     function renderAdmin($user){
         $userObj = array(
-            'codeProf' => $user['codeAdmin'],
+            'code' => $user['codeAdmin'],
             'nom' => $user['nom'],
             'prenom' => $user['prenom'],
             'email' => $user['email'],

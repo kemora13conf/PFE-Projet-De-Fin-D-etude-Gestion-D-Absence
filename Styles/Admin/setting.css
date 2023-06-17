@@ -1,0 +1,26 @@
+.admin-forms-container{
+    max-width: 800px;
+    width: 100%;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+.add-update-form{
+    box-shadow: rgba(50, 50, 93, 0.116) 0px 25px 50px -10px, 
+                rgba(0, 0, 0, 0.178) 0px 15px 30px -15px;
+}
+.form-submit button{
+    width: 100%;
+}
+.form-file{
+    padding: 0;
+}
+
+@media only screen and (max-width: 780px) {
+    .admin-form .form-body{
+        flex-direction: column;
+    }
+}

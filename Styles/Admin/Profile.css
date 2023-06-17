@@ -1,0 +1,121 @@
+main{
+    --width: 250px;
+    width: calc(100% - var(--width));
+    min-height: calc(100vh - 100px);
+    height: auto;
+    margin-top: 100px;
+    margin-left: var(--width);
+    padding: 40px;
+    background-color: var(--bg-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.profile{
+    width: 100%;
+    height: calc(100vh - 180px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+    animation: fadeIn .250s forwards ease-in-out;
+}
+
+.remove-content{
+    animation: fadeOut .250s forwards ease-in-out;
+}
+
+.profile--card{
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 35px;
+    border-radius: 25px;
+    margin-top: 100px;
+    background: linear-gradient(-45deg, var(--light), var(--light-secondary));
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    position: relative;
+}
+
+.profile--image-div{
+    width: 150px;
+    height: 150px;
+    background: red;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-top: -95px;
+    background: 0px 0px 0px 10px black;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, 
+                rgba(50, 50, 93, 0.25) 0px 25px 50px -10px, 
+                rgba(0, 0, 0, 0.3) 0px 15px 30px -15px;
+}
+.profile--image-div img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.profile--role-gender{
+    position: absolute;
+    right: 35px;
+    top: 35px;
+}
+
+.profile--role{
+    font-size: 20px;
+    line-height: 25px;
+    font-family: Poppins-medium;
+    color: var(--dark);
+}
+.profile--gender{
+    font-family: Poppins;
+    color: var(--gray);
+    margin-left: auto;
+    width: fit-content;
+}
+
+.profile--info{
+    margin-top: 10px;
+}
+.profile--name-number{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+.profile--name{
+    font-size: 25px;
+    font-family: Poppins-medium;
+}
+.profile--number{
+    color: var(--secondary);
+}
+.profile--email{
+    color: var(--gray);
+}
+@media only screen and (max-width: 810px){
+    main{
+        --width: 200px;
+    }
+}
+@media only screen and (max-width: 630px){
+    main{
+        min-height: calc(100% - 70px);
+        margin-top: 70px;
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 0px 0px;
+        padding-bottom: 105px;
+    }
+    .profile--card{
+        margin-top: 70px;
+    }
+    .profile--name{
+        line-height: 25px;
+    }
+}

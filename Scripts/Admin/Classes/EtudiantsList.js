@@ -140,7 +140,7 @@ export default class EtudiantsList{
         this.list.setAttribute("class", "main-list");
 
         let htmlOptions = '';
-        let selectedOption = "<div class='option' data-value='-1'>Tous les etudiants</div>"
+        let selectedOption = "<div class='the-option' data-value='-1'>Tous les etudiants</div>"
         if(this.filter != -1){
             console.log('filter:', this.filter)
             selectedOption = `<div class='the-option' data-value='${this.filter.codeClasse}'>${this.filter.niveauClasse}-${this.filter.nomClasse}</div>`

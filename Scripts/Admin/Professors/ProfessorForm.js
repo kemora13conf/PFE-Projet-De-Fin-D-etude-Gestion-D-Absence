@@ -226,7 +226,14 @@ export default class ProfessorForm {
                 || this.isEmpty(prenom)
                 || this.isEmpty(email)
                 || this.isEmpty(phone)
-            ) return;
+            ){
+                alertContainer.appendChild(new Alert({
+                    type: 'warning',
+                    msg_title: 'échoué',
+                    msg_text: "Tous les input sont requis!"
+                }, alertContainer).render())
+                return;
+            };
 
             let formData = new FormData();
             if(this.professor != null){

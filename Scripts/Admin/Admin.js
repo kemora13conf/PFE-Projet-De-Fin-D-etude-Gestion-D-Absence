@@ -1,11 +1,11 @@
-import Alert from "../Alert/Alert.js";
 import { loadData } from "../utils.js";
 import ClassesList from "./Classes/ClassesList.js";
 import EtudiantsList from "./Classes/EtudiantsList.js";
 import Dashboard from "./Dashboard/Dashboard.js";
 import Professors from "./Professors/Professors.js";
 import Seances from "./Seances/Seances.js";
-import SeancePage from "./Seances/SeancePage.js";
+import Profile from "./profile/Profile.js";
+import Setting from "./profile/Setting.js";
 
 let root = document.getElementById('root');
 let alertContainer = document.querySelector('.alerts-container');
@@ -22,6 +22,8 @@ let statistiqueBtn = document.getElementById('statistique-btn');
 let profsBtn = document.getElementById('profs-btn');
 let classesBtn = document.getElementById('classes-btn');
 let seancesBtn = document.getElementById('seances-btn');
+let profileBtn = document.getElementById('profile-btn');
+let settingsBtn = document.getElementById('settings-btn');
 
 function goTo(callback_func){
     if(root.children.length != 0){
@@ -39,7 +41,7 @@ function updateUI(res, title, subTitle){
     header__title.innerHTML = title;
     header__title__details.innerHTML = subTitle;
     prof__name.innerHTML = genderWord+". "+res.nom
-    prof__image.setAttribute("src",`/Profile-pictures/Teachers/${res.image}`)
+    prof__image.setAttribute("src",`/Profile-pictures/Admins/${res.image}`)
     prof__image.setAttribute("alt",`${res.nom} ${res.prenom}`)
 }
 
@@ -69,14 +71,26 @@ async function loadSeances(){
     root.appendChild(new Seances().render());
 }
 
-async function loadSeancePage(){
+// This function is used to load the seance page only for testing
+// async function loadSeancePage(){
+//     let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
+//     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
+//     root.appendChild(await new SeancePage(28).render());
+// }
+
+async function loadProfile(){
     let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
-    root.appendChild(await new SeancePage(28).render());
+    root.appendChild(new Profile(res).render());
+}
+async function loadSettings(){
+    let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
+    updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
+    root.appendChild(new Setting(res).render());
 }
 
 
-window.addEventListener('load', loadSeancePage);
+window.addEventListener('load',loadSettings);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
@@ -91,6 +105,14 @@ seancesBtn.addEventListener('click', ()=>{
     goTo(loadSeances)
 })
 
+profileBtn.addEventListener('click', ()=>{
+    goTo(loadProfile)
+})
+settingsBtn.addEventListener('click', ()=>{
+    goTo(loadSettings)
+})
+
+
 
 export {
     root,
@@ -99,6 +121,7 @@ export {
     goTo,
     updateUI,
     loadDashboard,
+    loadSettings,
     header__title, 
     header__title__details, 
     today__date, 
