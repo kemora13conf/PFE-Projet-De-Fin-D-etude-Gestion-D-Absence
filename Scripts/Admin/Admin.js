@@ -90,7 +90,7 @@ async function loadSettings(){
 }
 
 
-window.addEventListener('load',loadSettings);
+window.addEventListener('load',loadDashboard);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
