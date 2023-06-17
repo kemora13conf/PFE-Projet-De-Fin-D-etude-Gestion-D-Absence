@@ -69,7 +69,7 @@ export default class ClassesList{
     }
 
     async configElements(){
-        this.listContainer.setAttribute("class", "list-container");
+        this.listContainer.setAttribute("class", "list-container classes-list");
         this.listHead.setAttribute("class", "list-head");
         this.listHolder.setAttribute("class", "list-holder");
         this.list.setAttribute("class", "main-list");

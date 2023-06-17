@@ -72,7 +72,7 @@ async function loadSeances(){
 async function loadSeancePage(){
     let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
-    root.appendChild(await new SeancePage(37).render());
+    root.appendChild(await new SeancePage(28).render());
 }
 
 

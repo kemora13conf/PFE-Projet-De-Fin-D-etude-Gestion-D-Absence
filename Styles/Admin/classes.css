@@ -55,7 +55,7 @@
 thead tr{
     background-color: var(--light-secondary);
 }
-tr{
+.classes-list tr{
     cursor: pointer;
     transition: all.3s ease;
 }

@@ -123,12 +123,29 @@ export default class SeancePage{
         for(let i = Number(this.seance.heure); i<Number(this.seance.heure)+Number(this.seance.duree); i++){
             if(data.arr[i - Number(this.seance.heure)].isAbsent){
                 
-                htmlInpts += `<td class="hour ${data.arr[i - Number(this.seance.heure)].justification == '1'? 'justifier' : 'non-justifier'}"><input type="checkbox" data-id="${data.cne}" value="${i}" checked/></td>`;
+                htmlInpts += `<td class="hour" data-state='enabled'>
+                                <input 
+                                    type="checkbox" 
+                                    data-id="${data.cne}" 
+                                    value="${i}" 
+                                    ${data.arr[i - Number(this.seance.heure)].justification == '1'? 'checked' : ''} />
+                                <div class="toggle-btn ${data.arr[i - Number(this.seance.heure)].justification == '1'? 'toggle-btn-activated' : ''}">
+                                    <div class="inner-circle"></div>
+                                </div>
+                            </td>`;
                 if(data.arr[i - Number(this.seance.heure)].comment != '')
                     commentContainer = data.arr[i - Number(this.seance.heure)].comment;
             }
             else{
-                htmlInpts += `<td class="hour"><input type="checkbox" data-id="${data.cne}" value="${i}" /></td>`;
+                htmlInpts += `<td class="hour hour-disbaled">
+                                <input 
+                                    type="checkbox" 
+                                    data-id="${data.cne}" 
+                                    value="${i}" disabled />
+                                <div class="toggle-btn ${data.arr[i - Number(this.seance.heure)].justification == '1'? 'toggle-btn-activated' : ''}">
+                                    <div class="inner-circle"></div>
+                                </div>
+                            </td>`;
             }
         }
         return [htmlInpts,commentContainer];
@@ -150,11 +167,58 @@ export default class SeancePage{
         let sortedData = this.sortEtudiantList(arr); // Sort by order number the list of etudiants
         console.log(sortedData)
         sortedData.forEach(
-            async(item) => {
+            (item) => {
                 // This loop render a row in the table for each etudiant.
                 let row = this.renderEtudiantRow(item);
                 this.list.innerHTML += row;
             })
+        
+        // In here all the user column are within list
+        // so we trigger the eventlistener on the toggle btns
+        let trToggleBtns= this.list.querySelectorAll('.hour');
+        trToggleBtns.forEach(tr => {
+            const inpt = tr.children[0];
+            const btn = tr.children[1];
+            btn.addEventListener('click', ()=>{
+                inpt.click();
+            })
+            inpt.addEventListener('change', async ()=>{
+                const formData = new FormData();
+                const postedData = {
+                    codeSeance: this.id,
+                    date: this.currentDate,
+                    hour: inpt.value,
+                    cne: inpt.dataset.id
+                };
+                if(inpt.checked){
+                    formData.append('justify',JSON.stringify(postedData));
+                    // send a request to justify the absent in that seance
+                    await fetch(
+                        '/Admin/Inc/Api/Absence.inc.php',
+                        {
+                            method: 'POST',
+                            body: formData
+                        }
+                    )
+                    .then(res => res.json())
+                    .then(res => console.log(res));
+                }else{
+                    formData.append('un-justify',JSON.stringify(postedData));
+                    // send a request to justify the absent in that seance
+                    await fetch(
+                        '/Admin/Inc/Api/Absence.inc.php',
+                        {
+                            method: 'POST',
+                            body: formData
+                        }
+                    )
+                    .then(res => res.json())
+                    .then(res => console.log(res));
+                }
+                btn.classList.toggle('toggle-btn-activated');
+            });
+
+        })
     }
     renderEtudiantRow(user){
         let row = `<tr data-id='${user.cne}'>
