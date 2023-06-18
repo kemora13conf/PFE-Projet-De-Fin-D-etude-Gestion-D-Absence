@@ -84,7 +84,7 @@ async function loadSettings(){
     root.appendChild(new Setting(res).render());
 }
 
-window.addEventListener('load',loadStatistiques);
+window.addEventListener('load',loadDashboard);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
