@@ -12,6 +12,7 @@
     <!-- LINK THE RSET CSS FILE -->
     <link rel="stylesheet" href="../../Styles/reset.css">
     <!-- LINK THE STYLE FILE -->
+    <link rel="stylesheet" href="../../Styles/Admin/statistiques.css">
     <link rel="stylesheet" href="../../Styles/Admin/Header.css">
     <link rel="stylesheet" href="../../Styles/Admin/dashboard.css">
     <link rel="stylesheet" href="../../Styles/Admin/classes.css">

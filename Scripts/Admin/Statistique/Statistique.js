@@ -53,7 +53,7 @@ export default class Statistique{
             this.secCvx2Holder
         )
 
-        let [res] = await loadData('/Professor/Inc/Api/Statistiques.inc.php?chart3=true')
+        let [res] = await loadData('/Admin/Inc/Api/Statistiques.inc.php?chart3=true')
         new Chart(
             this.secCanvas2,
             {

@@ -14,35 +14,32 @@
         $uid = json_decode($_SESSION['user']);
         $req = mysqli_query($conn, "SELECT * From professeurs WHERE codeProf='$uid[0]' AND password='$uid[1]'");
         $res = mysqli_fetch_assoc($req);
-        if(!mysqli_error($conn) and isset($res) == 1 and $uid[2] == 'professor'){
-            header('Location:/Professor/');
+        if($uid[2] == 'professor'){
+            if(!mysqli_error($conn) and isset($res) == 1){
+                header('Location:/Professor/');
+            }
         }
-        if(!mysqli_error($conn) and isset($res) == 1 and $uid[2] == 'etudiant'){
-            header('Location:/Etudiant/');
+        if($uid[2] == 'etudiant'){
+            if(!mysqli_error($conn) and isset($res) == 1){
+                header('Location:/Etudiant/');
+            }
+        }
+    }
+    if(isset($_SESSION['admin'])){
+        $uid = json_decode($_SESSION['admin']);
+        $req = mysqli_query($conn, "SELECT * From administrateurs WHERE codeAdmin='$uid[0]' AND mdp='$uid[1]'");
+        $res = mysqli_fetch_assoc($req);
+        if(!mysqli_error($conn) and isset($res) == 1){
+            header('Location:/Admin/');
         }
     }
     $addScript = false;
-    if (isset($_POST['submit'])){
-        $mail = new PHPMailer(true);
-
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'devops72023@gmail.com';
-        $mail->Password = 'kayhrfsxapgacddg';
-        $mail->SMTPSecure = 'ssl';
-        $mail->Port = 465;
-
-        $username = $_POST['username'];
-        $req = mysqli_query($conn, "SELECT * FROM professeurs WHERE email = '$username' LIMIT 1");
-        $user = mysqli_fetch_assoc($req);
-        if($user){
+    function sendEmailTo($conn, $mail, $table, $email){
             $token = bin2hex(random_bytes(32));
-            $email = $user['email'];
             $query = "UPDATE professeurs SET reset_token='$token' WHERE email = '$email'";
             mysqli_query($conn, $query) or die(mysqli_error($conn));
 
-            $mail->setFrom('devops72023@gmail.com');
+            $mail->setFrom($_ENV['SMTP_USER']);
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = "Reinitialization de mot de passe";
@@ -52,6 +49,23 @@
             $mail->Body = "Clicker sur le lien pour changer votre mot de passe: $resetLink";
             $mail->send();
             
+    }
+    if (isset($_POST['submit'])){
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['SMTP_USER'];
+        $mail->Password = $_ENV['SMTP_PASSWORD'];
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
+
+        $username = $_POST['username'];
+        $req = mysqli_query($conn, "SELECT * FROM professeurs WHERE email = '$username' LIMIT 1");
+        if (mysqli_num_rows($req) > 0) {
+            $user = mysqli_fetch_assoc($req);
+            sendEmailTo($conn, $mail, 'professeurs', $username);
             $addScript = true;
 
         }else{

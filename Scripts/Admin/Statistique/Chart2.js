@@ -10,7 +10,7 @@ export default class canvasChart2{
     }
     
     async configGeneralChart(){
-        const [res] = await loadData(`/Professor/Inc/Api/OwnSeances.inc.php?own`)
+        const [res] = await loadData(`/Admin/Inc/Api/AllSeances.inc.php?all`)
         let htmlOptions = '';
         res.forEach(element => {
             htmlOptions += `
@@ -21,9 +21,9 @@ export default class canvasChart2{
         this.generalChart.innerHTML = `
                 <div class="secondary-chart-head">
                     <h3>Absences dans une séance</h3>
-                    <div class="filter">
+                    <div class="options" style="margin-right:auto;margin-left:0;">
                         <div class="choosed-option" id="choosed-option-filter">
-                            <div class="the-date" data-value="${res[0].codeMatiere}">${res[0].nomMatiere}</div>
+                            <div class="the-option" data-value="${res[0].codeMatiere}">${res[0].nomMatiere}</div>
                             <i class="fas fa-caret-down"></i>
                         </div>
                         <div class="options-list" id="options-list-filter">
@@ -65,7 +65,7 @@ export default class canvasChart2{
                 data: {
                   labels: [],
                   datasets: [{
-                    label: '# Total des absences dans une séance durant un mois',
+                    label: '# Total des absences dans les seances d une matiere durant un mois',
                     data: [],
                     borderWidth: 1
                   }]
@@ -81,7 +81,7 @@ export default class canvasChart2{
         )
     }
     async initializeChart(codeMatiere){
-        let [res] = await loadData(`/Professor/Inc/Api/Statistiques.inc.php?chart2&codeMatiere=${codeMatiere}`)
+        let [res] = await loadData(`/Admin/Inc/Api/Statistiques.inc.php?chart2&codeMatiere=${codeMatiere}`)
         console.log(res);
         let data = [];
         let labels = [];

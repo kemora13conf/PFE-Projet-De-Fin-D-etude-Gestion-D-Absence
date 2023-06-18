@@ -65,7 +65,7 @@ export default class canvasChart2{
                 data: {
                   labels: [],
                   datasets: [{
-                    label: '# Total des absences dans une séance durant un mois',
+                    label: '# Total des absences dans les seances d une matiere durant un mois',
                     data: [],
                     borderWidth: 1
                   }]

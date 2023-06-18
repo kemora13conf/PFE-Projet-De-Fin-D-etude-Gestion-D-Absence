@@ -18,9 +18,9 @@ export default class canvasChart1{
                     </div>
                     <div class="genreral-chart-form">
                         <h2 class="chart-title general-chart-title">Absence par </h2>
-                        <div class="filter">
+                        <div class="options">
                             <div class="choosed-option" id="choosed-option-filter1">
-                                <div class="the-date" data-value="classes">Classes</div>
+                                <div class="the-option" data-value="classes">Classes</div>
                                 <i class="fas fa-caret-down"></i>
                             </div>
                             <div class="options-list" id="options-list-filter1">
@@ -29,9 +29,9 @@ export default class canvasChart1{
                             </div>
                         </div>
                         <h2 class="chart-title general-chart-title"> dans </h2>
-                        <div class="filter">
+                        <div class="options">
                             <div class="choosed-option" id="choosed-option-filter2">
-                                <div class="the-date" data-value="month">Mois</div>
+                                <div class="the-option" data-value="month">Mois</div>
                                 <i class="fas fa-caret-down"></i>
                             </div>
                             <div class="options-list" id="options-list-filter2">
@@ -82,10 +82,10 @@ export default class canvasChart1{
                     monthsOptions += `<div class="option filter3-option" data-value="${index+1}">${month}</div>`
                 })
                 otherInputs.innerHTML = `
-                    <div class="filter">
+                    <div class="options">
                         <label class="chart-title">Choisir le mois</label>
                         <div class="choosed-option" id="choosed-option-filter3">
-                            <div class="the-date" data-value="${currentMonth + 1}">${monthsList[currentMonth]}</div>
+                            <div class="the-option" data-value="${currentMonth + 1}">${monthsList[currentMonth]}</div>
                             <i class="fas fa-caret-down"></i>
                         </div>
                         <div class="options-list" id="options-list-filter3">
@@ -183,7 +183,7 @@ export default class canvasChart1{
         let flt3 = this.generalChart.querySelectorAll('#choosed-option-filter3')[0]
                     .children[0].dataset.value;
 
-        let [res] = await loadData(`/Professor/Inc/Api/Stats.inc.php?chart1&whom=${flt1}&time=${flt2}&date=${flt3}`)
+        let [res] = await loadData(`/Admin/Inc/Api/Stats.inc.php?chart1&whom=${flt1}&time=${flt2}&date=${flt3}`)
         console.log(res)
         let labels = [];
         let data = [];
@@ -224,7 +224,7 @@ export default class canvasChart1{
             }
             
             //  here we submit the data required to get the statistiques
-            let [res] = await loadData(`/Professor/Inc/Api/Stats.inc.php?chart1&whom=${flt1}&time=${flt2}&date=${flt3}`)
+            let [res] = await loadData(`/Admin/Inc/Api/Stats.inc.php?chart1&whom=${flt1}&time=${flt2}&date=${flt3}`)
 
             if(flt1 == 'classes'){
                 let labels = [];

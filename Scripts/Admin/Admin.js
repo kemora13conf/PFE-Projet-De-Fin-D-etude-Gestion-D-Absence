@@ -57,9 +57,9 @@ async function loadClassses(){
     root.appendChild(new ClassesList(res).render());
 }
 async function loadStatistiques(){
-    let [res,req] = await loadData('/Professor/Inc/Api/CurrentUser.inc.php');
-    updateUI(res, "Statistiques", "Les statistiques d'absences");
-    root.appendChild(new Statistique(res).render());
+    let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
+    updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
+    root.appendChild(new Statistique().render());
 }
 
 async function loadProfessors(){
@@ -84,7 +84,7 @@ async function loadSettings(){
     root.appendChild(new Setting(res).render());
 }
 
-window.addEventListener('load',loadDashboard);
+window.addEventListener('load',loadStatistiques);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
