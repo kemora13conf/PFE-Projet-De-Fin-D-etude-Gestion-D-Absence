@@ -7,11 +7,23 @@
         $uid = json_decode($_SESSION['user']);
         $req = mysqli_query($conn, "SELECT * From professeurs WHERE codeProf='$uid[0]' AND password='$uid[1]'");
         $res = mysqli_fetch_assoc($req);
-        if(!mysqli_error($conn) and isset($res) == 1 and $uid[2] == 'professor'){
-            header('Location:/Professor/');
+        if($uid[2] == 'professor'){
+            if(!mysqli_error($conn) and isset($res) == 1){
+                header('Location:/Professor/');
+            }
         }
-        if(!mysqli_error($conn) and isset($res) == 1 and $uid[2] == 'etudiant'){
-            header('Location:/Etudiant/');
+        if($uid[2] == 'etudiant'){
+            if(!mysqli_error($conn) and isset($res) == 1){
+                header('Location:/Etudiant/');
+            }
+        }
+    }
+    if(isset($_SESSION['admin'])){
+        $uid = json_decode($_SESSION['admin']);
+        $req = mysqli_query($conn, "SELECT * From administrateurs WHERE codeAdmin='$uid[0]' AND mdp='$uid[1]'");
+        $res = mysqli_fetch_assoc($req);
+        if(!mysqli_error($conn) and isset($res) == 1){
+            header('Location:/Admin/');
         }
     }
 
@@ -19,10 +31,16 @@
         $token = $_GET['token'];
         $req = mysqli_query($conn, "SELECT * FROM professeurs WHERE reset_token='$token' LIMIT 1") or die(mysqli_error($conn));
         $res = mysqli_fetch_assoc($req);
-
-        if(!isset($res)){
-            header('Location:/');
+        if(mysqli_num_rows($req) == 0){
+            $req = mysqli_query($conn, "SELECT * FROM etudiants WHERE reset_token='$token' LIMIT 1") or die(mysqli_error($conn));
+            if(mysqli_num_rows($req) == 0){
+                $req = mysqli_query($conn, "SELECT * FROM administrateurs WHERE reset_token='$token' LIMIT 1") or die(mysqli_error($conn));
+                if(mysqli_num_rows($req) == 0){
+                    header('Location:/');
+                }
+            }
         }
+
     }
 
     if (isset($_POST['submit'])){
@@ -32,6 +50,8 @@
         if(strlen($pwd) >= 6 ){
             if($pwd === $re_pwd){
                 mysqli_query($conn, "UPDATE professeurs SET password='$pwd' WHERE reset_token='$token' LIMIT 1") or die(mysqli_error($conn));
+                mysqli_query($conn, "UPDATE etudiants SET password='$pwd' WHERE reset_token='$token' LIMIT 1") or die(mysqli_error($conn));
+                mysqli_query($conn, "UPDATE administrateurs SET mdp='$pwd' WHERE reset_token='$token' LIMIT 1") or die(mysqli_error($conn));
                 header('Location:/');
             }else{
                 $_SESSION['errors']['re-pwd'] = "Les deux mot de passe sont pas les meme!";

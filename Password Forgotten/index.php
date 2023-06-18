@@ -36,7 +36,7 @@
     $addScript = false;
     function sendEmailTo($conn, $mail, $table, $email){
             $token = bin2hex(random_bytes(32));
-            $query = "UPDATE professeurs SET reset_token='$token' WHERE email = '$email'";
+            $query = "UPDATE $table SET reset_token='$token' WHERE email = '$email'";
             mysqli_query($conn, $query) or die(mysqli_error($conn));
 
             $mail->setFrom($_ENV['SMTP_USER']);
@@ -69,7 +69,21 @@
             $addScript = true;
 
         }else{
-            $_SESSION['errors']['user'] = "Email not found!";
+            $req = mysqli_query($conn, "SELECT * FROM etudiants WHERE email = '$username' LIMIT 1");
+            if (mysqli_num_rows($req) > 0) {
+                $user = mysqli_fetch_assoc($req);
+                sendEmailTo($conn, $mail, 'etudiants', $username);
+                $addScript = true;
+            }else{
+                $req = mysqli_query($conn, "SELECT * FROM administrateurs WHERE email = '$username' LIMIT 1");
+                if (mysqli_num_rows($req) > 0) {
+                    $user = mysqli_fetch_assoc($req);
+                    sendEmailTo($conn, $mail, 'administrateurs', $username);
+                    $addScript = true;
+                }else{
+                    $_SESSION['errors']['user'] = "Email not found!";
+                }
+            }
         }
     }
 ?>
