@@ -6,6 +6,7 @@ import Professors from "./Professors/Professors.js";
 import Seances from "./Seances/Seances.js";
 import Profile from "./profile/Profile.js";
 import Setting from "./profile/Setting.js";
+import Statistique from "./Statistique/Statistique.js";
 
 let root = document.getElementById('root');
 let alertContainer = document.querySelector('.alerts-container');
@@ -55,11 +56,12 @@ async function loadClassses(){
     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
     root.appendChild(new ClassesList(res).render());
 }
-async function loadEtudiants(){
-    let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
-    updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
-    root.appendChild(new EtudiantsList().render());
+async function loadStatistiques(){
+    let [res,req] = await loadData('/Professor/Inc/Api/CurrentUser.inc.php');
+    updateUI(res, "Statistiques", "Les statistiques d'absences");
+    root.appendChild(new Statistique(res).render());
 }
+
 async function loadProfessors(){
     let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
@@ -70,13 +72,6 @@ async function loadSeances(){
     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
     root.appendChild(new Seances().render());
 }
-
-// This function is used to load the seance page only for testing
-// async function loadSeancePage(){
-//     let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
-//     updateUI(res,'Dashboard',`Admin: ${res.nom} ${res.prenom}`)
-//     root.appendChild(await new SeancePage(28).render());
-// }
 
 async function loadProfile(){
     let [res] = await loadData('/Admin/Inc/Api/CurrentUser.inc.php');
@@ -89,11 +84,13 @@ async function loadSettings(){
     root.appendChild(new Setting(res).render());
 }
 
-
 window.addEventListener('load',loadDashboard);
 
 dashboardBtn.addEventListener('click', ()=>{
     goTo(loadDashboard)
+})
+statistiqueBtn.addEventListener('click', ()=>{
+    goTo(loadStatistiques)
 })
 classesBtn.addEventListener('click', ()=>{
     goTo(loadClassses)

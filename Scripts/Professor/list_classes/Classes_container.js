@@ -103,7 +103,7 @@ export default class ListClasses{
         function weekDays(stimp){
             let date = new Date(stimp)
             let list = '';
-            for (let i = 0; i < 7; i++){
+            for (let i = 0; i < 31; i++){
                 list += `<div   class="option" 
                                 data-date="${getDate(stimp)}"
                                 data-value="${new Date(stimp).getDay()}">
@@ -122,7 +122,7 @@ export default class ListClasses{
         \   <div class="the-date" data-date="${getDate(today)}" data-value="${new Date(today).getDay()}">${getDayName(today)+" "+getDate(today)}</div>
         \   <i class="fas fa-caret-down"></i>
             `
-        this.dates_list.setAttribute('class', 'options-list');
+        this.dates_list.setAttribute('class', 'options-list dates');
         this.dates_list.setAttribute('id', 'options-list');
         this.dates_list.innerHTML = weekDays(today); // generate all the option
         this.filter_dates.append(this.choosed_date,this.dates_list);

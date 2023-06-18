@@ -70,13 +70,7 @@ async function loadProfile(){
     root.appendChild(new Profile(res).render());
 }
 
-window.addEventListener('load', () =>{
-    // loadClassesList();
-    loadStatistiques();
-    // loadSettings();
-    // loadSeances();
-    // loadProfile();
-})
+window.addEventListener('load', loadClassesList)
 
 listBtn.addEventListener('click', () =>{
     goTo(loadClassesList)

@@ -9,12 +9,35 @@
         exit;
     }
 
-    if(isset($_GET['chart1'])){
-
-    }
-
     if(isset($_GET['chart2'])){
-        
+        $uid = intval(json_decode($_SESSION['user'])[0]);
+        $codeMatiere = $_GET['codeMatiere'];
+        $allAbsence=array();
+        $monthsList = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet',
+                       'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+        foreach($monthsList as $index => $month){
+            $ind = $index+1;
+            $req = mysqli_query(
+                $conn, 
+                "SELECT COUNT(*) as TotaleAbsence FROM abscenter 
+                WHERE codeSeance IN (
+                    SELECT codeSeance FROM sceance 
+                    WHERE codeMatiere='$codeMatiere'
+                    AND codeProf='$uid'
+                )
+                AND date LIKE '%-0$ind-%'"
+            ) or die(mysqli_error($conn));
+            $row = mysqli_fetch_assoc($req);
+            array_push(
+                $allAbsence,
+                [
+                    'month'=>$month,
+                    'absence'=>$row['TotaleAbsence']
+                ]
+            );
+        }
+        echo json_encode($allAbsence);
+        exit;
     }
 
     if(isset($_GET['chart3'])){

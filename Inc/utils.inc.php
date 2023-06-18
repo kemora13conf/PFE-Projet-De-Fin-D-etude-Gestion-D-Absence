@@ -125,6 +125,23 @@
         return $rowCount > 0;
     }
 
+    function getWeekInterval($weekNumber, $year)
+    {
+        $start = new DateTime();
+        $start->setISODate($year, $weekNumber);
+        $start->setTime(0, 0, 0);
+
+        $end = new DateTime();
+        $end->setISODate($year, $weekNumber, 7);
+        $end->setTime(23, 59, 59);
+
+        $interval = [
+            'start' => $start->format('Y-m-d'),
+            'end' => $end->format('Y-m-d')
+        ];
+
+        return $interval;
+}
     function export_professeurs($conn){
         $id = uniqid();
         $export_to = __DIR__.'/../Exported-Files/';

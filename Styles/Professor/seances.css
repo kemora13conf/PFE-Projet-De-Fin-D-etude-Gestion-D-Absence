@@ -140,6 +140,12 @@ thead tr td{
         top: 50%;
         transform: translateY(-50%);
     }
+    .dates.show-options-list{    
+        opacity: 1;
+        visibility: visible;
+        top: unset;
+        transform: translateY(45px);
+    }
     .rightInpts,
     .leftInpts{
         width: 100%;

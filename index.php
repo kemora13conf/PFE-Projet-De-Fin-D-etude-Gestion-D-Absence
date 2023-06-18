@@ -139,8 +139,6 @@
                     <input type="submit" value="SE CONNECTER" name="submit">
                 </div>
                 <div class="form-group other-group">
-                    <input type="checkbox" name="souvenir" id="souvenir">
-                    <label for="souvenir">Se souvenir de moi</label>
                     <a href="/Password Forgotten/" class="forgot-pwd">Mot de passe oublié?</a>
                 </div>
             </form>

@@ -148,6 +148,10 @@
 .options-list .option:hover{
     background: var(--light-secondary);
 }
+.dates{
+    max-height: 300px;
+    overflow-y: auto;
+}
 .show-options-list{
     opacity: 1;
     visibility: visible;
