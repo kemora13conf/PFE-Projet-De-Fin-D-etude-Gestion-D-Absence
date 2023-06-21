@@ -139,6 +139,7 @@
                     <input type="submit" value="SE CONNECTER" name="submit">
                 </div>
                 <div class="form-group other-group">
+                    <a href="/Admin/" class="admin" class="admin" >Admin</a>
                     <a href="/Password Forgotten/" class="forgot-pwd">Mot de passe oublié?</a>
                 </div>
             </form>

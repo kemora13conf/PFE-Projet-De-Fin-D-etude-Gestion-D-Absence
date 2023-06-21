@@ -189,6 +189,11 @@ nav ul li button .icon{
     fill: var(--gray);
     transition: all .3s ease-in-out;
 }
+nav ul li button .awesome-icon{
+    font-size: 20px;
+    color: var(--gray);
+    transition: all .3s ease-in-out;
+}
 
 nav ul li button .text{
     color: var(--gray);
@@ -336,7 +341,9 @@ nav ul li:nth-child(4).active ~ .indicator{
         gap: 0px;
         padding: 0;
     }
-    nav ul li button .icon{
+    nav ul li button .icon,
+    nav ul li button .awesome-icon,
+    nav ul li button i{
         transform: translateY(10px);
         width: 25px;
         height: 25px;
@@ -351,6 +358,10 @@ nav ul li:nth-child(4).active ~ .indicator{
     nav ul li.active button .icon{
         transform: translateY(-25px);
         fill: var(--light);
+    }
+    nav ul li.active button .awesome-icon{
+        transform: translateY(-25px);
+        color: var(--light);
     }
     nav ul li:nth-child(3) button .icon path:nth-child(2){transition: all .3s ease-in-out;}
     nav ul li:nth-child(3).active button .icon path:nth-child(2){

@@ -26,8 +26,9 @@
     <?php 
         } else if($role == 'etudiant') {
     ?>
-        <link rel="stylesheet" href="../../Styles/Etudiant/Header.css">
+        <link rel="stylesheet" href="../../Styles/Etudiant/Header.css">v
         <link rel="stylesheet" href="../../Styles/Etudiant/settings.css">
+        <link rel="stylesheet" href="../../Styles/Etudiant/home.css">
 
     <?php } ?>
 
@@ -80,15 +81,22 @@
                         <div class="text">Liste d'absence</div>
                     </button>
                 </li>
+                <li class="list ">
+                    <button id="statistique-btn">
+                        <i class="fas fa-chart-pie"></i>
+                        <div class="text">Statistiques</div>
+                    </button>
+                </li>
             <?php } ?>
-            <li class="list <?php if($role == 'etudiant') {echo "active";}?>">
-                <button id="statistique-btn">
-                    <svg class="icon" viewBox="0 0 33 31" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.5278 14.5312V1.00508C16.5278 0.460156 16.9531 0 17.5 0C25.0165 0 31.1111 6.07285 31.1111 13.5625C31.1111 14.1074 30.6493 14.5312 30.1024 14.5312H16.5278ZM0 16.4688C0 9.12441 5.47483 3.04551 12.5781 2.07676C13.1372 1.99805 13.6111 2.44609 13.6111 3.00918V17.4375L23.1207 26.9131C23.5278 27.3188 23.4974 27.9848 23.0295 28.3117C20.6476 30.007 17.7309 31 14.5833 31C6.53212 31 0 24.4973 0 16.4688ZM31.9861 17.4375C32.5512 17.4375 32.9948 17.9098 32.9219 18.4668C32.454 21.8514 30.8194 24.8605 28.4314 27.0826C28.0668 27.4217 27.4957 27.3975 27.1432 27.0402L17.5 17.4375H31.9861Z" />
-                    </svg>
-                    <div class="text">Statistiques</div>
-                </button>
-            </li>
+            <?php if($role == 'etudiant') { ?>
+                <li class="list active">
+                    <button id="home-btn">
+                        <i class="awesome-icon fas fa-home"></i>
+                        <div class="text">Accueil</div>
+                    </button>
+                </li>
+            <?php } ?>
+            
             <li class="list">
                 <button id="parametre-btn">
                     <svg class="icon" viewBox="0 0 35 33" xmlns="http://www.w3.org/2000/svg">

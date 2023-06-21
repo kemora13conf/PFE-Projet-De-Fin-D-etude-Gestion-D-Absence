@@ -206,22 +206,25 @@ body{
     color: var(--gray);
     text-decoration: none;
     font-size: 12px;
-    margin-left: auto;
 }
 
-#souvenir {
-    accent-color: var(--secondary);
+.admin{
+    margin-left: 0;
+    margin-right:auto;
+    position: relative;
 }
 
 .forgot-pwd{
     display: block;
     position: relative;
+    margin-left: auto;
 }
 .forgot-pwd:hover {
     color: var(--dark);
 }
 
-.forgot-pwd::after {
+.forgot-pwd::after,
+.admin::after {
     content: "";
     display: block;
     position: absolute;
@@ -237,7 +240,8 @@ body{
     accent-color: var(--secondary);
 }
 
-.forgot-pwd:hover::after{
+.forgot-pwd:hover::after,
+.admin:hover::after {
     transform: scale(1);
 }
 

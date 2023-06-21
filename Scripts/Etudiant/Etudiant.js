@@ -1,6 +1,7 @@
 import Profile from "../Etudiant/profile/Profile";
 import Setting from "./profile/Setting.js";
 import { loadData } from "../utils.js";
+import Home from "./Home/Home.js";
 
 let root = document.getElementById('root');
 let alertContainer = document.querySelector('.alerts-container');
@@ -11,7 +12,7 @@ let today__date = document.getElementById('today-date');
 let prof__name = document.getElementById('prof-name');
 let prof__image = document.getElementById('prof-img');
 
-let statistiqueBtn = document.getElementById('statistique-btn');
+let homeBtn = document.getElementById('home-btn');
 let parametreBtn = document.getElementById('parametre-btn');
 let profileBtn = document.getElementById('profile-btn');
 
@@ -46,8 +47,13 @@ async function loadSettings(){
     updateUI(res, "Paramètres", "Changer votre informations");
     root.appendChild(new Setting(res).render());
 }
+async function loadHome(){
+    let [res,req] = await loadData('/Etudiant/Inc/Api/CurrentUser.inc.php');
+    updateUI(res, "Accueil", "Voire votre absence");
+    root.appendChild(await new Home(res).render());
+}
 
-addEventListener('load', loadProfile );
+addEventListener('load', loadHome );
 
 profileBtn.addEventListener('click', () =>{
     goTo(loadProfile);
@@ -55,6 +61,9 @@ profileBtn.addEventListener('click', () =>{
 
 parametreBtn.addEventListener('click', () => {
     goTo(loadSettings)
+})
+homeBtn.addEventListener('click', () => {
+    goTo(loadHome)
 })
 
 export {
