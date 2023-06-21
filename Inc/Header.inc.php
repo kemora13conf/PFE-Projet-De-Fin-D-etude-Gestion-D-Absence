@@ -83,7 +83,7 @@
                 </li>
                 <li class="list ">
                     <button id="statistique-btn">
-                        <i class="fas fa-chart-pie"></i>
+                        <i class="fas fa-chart-pie awesome-icon"></i>
                         <div class="text">Statistiques</div>
                     </button>
                 </li>
